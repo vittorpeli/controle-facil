@@ -1,6 +1,6 @@
-import type { Route } from './+types/_index'
+// import type { Route } from './+types/_index'
 
-export function meta({}: Route.MetaArgs) {
+export function meta() {
   return [
     { title: 'Controle Fácil' },
     { name: 'description', content: 'Controle Fácil suas finanças' },
