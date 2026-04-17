@@ -1,1 +1,69 @@
-@import "tailwindcss";
+/* 1. Explicitly define the CSS layers so we can control specificity */
+@layer theme, base, components, utilities;
+
+/* 2. Import ONLY Tailwind's Theme and Utilities (This disables Preflight/Reset) */
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* 3. Define your Design Tokens right here in CSS */
+@theme {
+  /* Colors */
+  --color-*: initial;
+  --color-primary: #fccd26;
+  --color-dark: #171406;
+  --color-dark-glare: #2d2816;
+  --color-mid: #ABA9A2;
+  --color-light: #ffffff;
+  
+  /* Font Family */
+  --font-base: "Satoshi", "Inter", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", system-ui, sans-serif;
+  --font-mono: "DM Mono", "monospace";
+  
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+  
+  /* Fluid Type Scale (Utopia-style) */
+  --text-step-0: clamp(0.9375rem, 0.8608rem + 0.3409vw, 1.125rem);
+  --text-step-1: clamp(1.0547rem, 0.9339rem + 0.5369vw, 1.35rem);
+  --text-step-2: clamp(1.1865rem, 1.0092rem + 0.7881vw, 1.62rem);
+  --text-step-3: clamp(1.3348rem, 1.0856rem + 1.1076vw, 1.944rem);
+  --text-step-4: clamp(1.5017rem, 1.1617rem + 1.5111vw, 2.3328rem);
+  --text-step-5: clamp(1.6894rem, 1.2353rem + 2.0181vw, 2.7994rem);
+  --text-step-6: clamp(1.9006rem, 1.3039rem + 2.6521vw, 3.3592rem);
+  --text-step-7: clamp(2.1382rem, 1.3638rem + 3.4417vw, 4.0311rem);
+  --text-step-8: clamp(2.4054rem, 1.4106rem + 4.4216vw, 4.8373rem);
+  --text-step-9: clamp(2.7061rem, 1.4385rem + 5.6339vw, 5.8048rem);
+  --text-step-10: clamp(3.0444rem, 1.4402rem + 7.1297vw, 6.9657rem);
+  
+  /* Line Height */
+  --leading-micro: 0.85;
+  --leading-flat: 1;
+  --leading-fine: 1.2; 
+  --leading-standard: 1.4;
+  --leading-loose: 1.7;
+
+  /* Fluid Spacing Scale (Utopia-style) */
+  --spacing-xs: clamp(0.4375rem, 0.4119rem + 0.1136vw, 0.5rem);
+  --spacing-s: clamp(0.875rem, 0.8239rem + 0.2273vw, 1rem);
+  --spacing-m: clamp(1.3125rem, 1.2358rem + 0.3409vw, 1.5rem);
+  --spacing-l: clamp(2.1875rem, 2.0597rem + 0.5682vw, 2.5rem);
+  --spacing-xl: clamp(3.0625rem, 2.8835rem + 0.7955vw, 3.5rem);
+  --spacing-2xl: clamp(3.5rem, 3.2955rem + 0.9091vw, 4rem);
+  --spacing-3xl: clamp(4.375rem, 4.1193rem + 1.1364vw, 5rem);
+  --spacing-4xl: clamp(6.5625rem, 6.179rem + 1.7045vw, 7.5rem);
+  --spacing-xs-l: clamp(0.4375rem, -0.4062rem + 3.75vw, 2.5rem);
+  --spacing-2xl-4xl: clamp(3.5rem, 1.8636rem + 7.2727vw, 7.5rem);
+  
+  /* Viewports */
+  --breakpoint-*: initial;
+  --breakpoint-sm: 330px;
+  --breakpoint-md: 760px;
+  --breakpoint-lg: 940px;
+  --breakpoint-xl: 1350px;
+}
+
+@import "./css/global/reset.css" layer(base);
+@import "./css/utilities/cube-utils.css"

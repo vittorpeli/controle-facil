@@ -1,0 +1,14 @@
+/* This automatically generates .flow-space-s, .flow-space-m, etc. */
+@utility flow-space-* {
+  --flow-space: --value(--spacing-*);
+}
+
+/* This automatically generates .gutter-s, .gutter-m, etc. */
+@utility gutter-* {
+  --gutter: --value(--spacing-*);
+}
+
+/* This automatically generates .region-space-s, .region-space-m, etc. */
+@utility region-space-* {
+  --region-space: --value(--spacing-*);
+}
