@@ -80,6 +80,8 @@
 @import "./css/compositions/wrapper.css";
 
 /* Blocks/Components */
+@import "./css/blocks/button.css";
+@import "./css/blocks/prose.css";
 
 /* Utilities */
 @import "./css/utilities/cube-utils.css";
