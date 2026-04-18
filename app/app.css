@@ -66,6 +66,6 @@
 }
 
 @import "./css/global/reset.css" layer(base);
-@import "./css/utilities/cube-utils.css"
-@import "./css/utilities/region.css"
-@import "./css/utilities/visually-hidden.css"
+@import "./css/utilities/cube-utils.css";
+@import "./css/utilities/region.css";
+@import "./css/utilities/visually-hidden.css";
