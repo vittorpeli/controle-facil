@@ -32,7 +32,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className='font-base'>
+      <body>
         {children}
         <ScrollRestoration />
         <Scripts />

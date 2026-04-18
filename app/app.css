@@ -65,7 +65,16 @@
   --breakpoint-xl: 1350px;
 }
 
+/* Global styles */
 @import "./css/global/reset.css" layer(base);
+@import "./css/global/global-styles.css";
+@import "./css/global/variables.css";
+
+/* Compositions */
+
+/* Blocks/Components */
+
+/* Utilities */
 @import "./css/utilities/cube-utils.css";
 @import "./css/utilities/region.css";
 @import "./css/utilities/visually-hidden.css";
