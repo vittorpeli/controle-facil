@@ -71,6 +71,13 @@
 @import "./css/global/variables.css";
 
 /* Compositions */
+@import "./css/compositions/cluster.css";
+@import "./css/compositions/flow.css";
+@import "./css/compositions/grid.css";
+@import "./css/compositions/repel.css";
+@import "./css/compositions/sidebar.css";
+@import "./css/compositions/switcher.css";
+@import "./css/compositions/wrapper.css";
 
 /* Blocks/Components */
 
