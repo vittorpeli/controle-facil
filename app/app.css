@@ -81,6 +81,16 @@
 /* Blocks/Components */
 @import "./css/blocks/button.css";
 @import "./css/blocks/prose.css";
+@import "./css/blocks/card.css";
+@import "./css/blocks/chart.css";
+@import "./css/blocks/form.css";
+@import "./css/blocks/header.css";
+@import "./css/blocks/headline.css";
+@import "./css/blocks/nav.css";
+@import "./css/blocks/panel.css";
+@import "./css/blocks/quote.css";
+@import "./css/blocks/table.css";
+@import "./css/blocks/transaction.css";
 
 /* Utilities */
 @import "./css/utilities/cube-utils.css";
