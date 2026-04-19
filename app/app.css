@@ -5,94 +5,39 @@
 @import "tailwindcss/theme.css" layer(theme);
 @import "tailwindcss/utilities.css" layer(utilities);
 
-@theme {
-  /* Colors */
-  --color-*: initial;
-  --color-primary: #032126;
-  --color-dark: #000405;
-  --color-dark-glare: #375257;
-  --color-secondary: #A7D5B8;
-  --color-light: #E8ECE9;
-  --color-error: #ba1a1a;
-  
-  /* Font Family */
-  --font-base: "Inter", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", system-ui, sans-serif;
-  --font-display: "Space Grotesk", "Inter", "Arial", system-ui, sans-serif;
-  --font-serif: "Noto Serif", "Merriweather", "Georgia", "Times New Roman", serif;
-  --font-mono: "IBM Plex Mono", "DM Mono", "monospace";
-  
-  /* Font Weights */
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 700;
-  --font-weight-black: 900;
-  
-  /* Fluid Type Scale (Utopia-style) */
-  --text-step-0: clamp(1.125rem, 0.99rem + 0.68vw, 1.5rem);
-  --text-step-1: clamp(1.25rem, 1.07rem + 0.91vw, 1.75rem);
-  --text-step-2: clamp(1.5rem, 1.32rem + 0.91vw, 2.0rem);
-  --text-step-3: clamp(1.75rem, 1.57rem + 0.91vw, 2.25rem);
-  --text-step-4: clamp(2rem, 1.73rem + 1.36vw, 2.75rem);
-  --text-step-5: clamp(2.5rem, 2.04rem + 2.27vw, 3.5rem);
-  
-  /* Line Height */
-  --leading-micro: 0.85;
-  --leading-flat: 1;
-  --leading-fine: 1.2; 
-  --leading-standard: 1.4;
-  --leading-loose: 1.7;
-
-  /* Fluid Spacing Scale (Utopia-style) */
-  --spacing-3xs: clamp(0.25rem, 0.23rem + 0.11vw, 0.31rem);
-  --spacing-2xs: clamp(0.625rem, 0.57rem + 0.34vw, 0.75rem);
-  --spacing-xs: clamp(0.75rem, 0.68rem + 0.34vw, 0.94rem);
-  --spacing-s: clamp(1rem, 0.91rem + 0.45vw, 1.25rem);
-  --spacing-m: clamp(1.5rem, 1.36rem + 0.68vw, 1.88rem);
-  --spacing-l: clamp(2rem, 1.82rem + 0.91vw, 2.5rem);
-  --spacing-xl: clamp(3rem, 2.73rem + 1.36vw, 3.75rem);
-  --spacing-2xl: clamp(4rem, 3.64rem + 1.82vw, 5rem);
-  /* Custom pairs */
-  --spacing-s-m: clamp(1rem, 0.5455rem + 2.2727vw, 2.25rem);
-  --spacing-m-xl: clamp(1.5rem, 0.6818rem + 4.0909vw, 3.75rem);
-  --spacing-l-2xl: clamp(2rem, 0.9091rem + 5.4545vw, 5rem);
-  
-  /* Viewports */
-  --breakpoint-*: initial;
-  --breakpoint-sm: 390px;
-  --breakpoint-md: 760px;
-  --breakpoint-lg: 940px;
-  --breakpoint-xl: 1350px;
-}
-
 /* Global styles */
 @import "./css/global/reset.css" layer(base);
+@import "./css/global/tokens.css";
 @import "./css/global/global-styles.css";
 @import "./css/global/variables.css";
 
 /* Compositions */
-@import "./css/compositions/cluster.css";
-@import "./css/compositions/flow.css";
-@import "./css/compositions/grid.css";
-@import "./css/compositions/repel.css";
-@import "./css/compositions/sidebar.css";
-@import "./css/compositions/switcher.css";
-@import "./css/compositions/wrapper.css";
+@import "./css/compositions/cluster.css" layer(components);
+@import "./css/compositions/flow.css" layer(components);
+@import "./css/compositions/grid.css" layer(components);
+@import "./css/compositions/repel.css" layer(components);
+@import "./css/compositions/sidebar.css" layer(components);
+@import "./css/compositions/switcher.css" layer(components);
+@import "./css/compositions/wrapper.css" layer(components);
 
 /* Blocks/Components */
-@import "./css/blocks/button.css";
-@import "./css/blocks/prose.css";
-@import "./css/blocks/card.css";
-@import "./css/blocks/chart.css";
-@import "./css/blocks/form.css";
-@import "./css/blocks/header.css";
-@import "./css/blocks/headline.css";
-@import "./css/blocks/nav.css";
-@import "./css/blocks/panel.css";
-@import "./css/blocks/quote.css";
-@import "./css/blocks/table.css";
-@import "./css/blocks/transaction.css";
+@import "./css/blocks/button.css" layer(components);
+@import "./css/blocks/prose.css" layer(components);
+@import "./css/blocks/card.css" layer(components);
+@import "./css/blocks/chart.css" layer(components);
+@import "./css/blocks/form.css" layer(components);
+@import "./css/blocks/header.css" layer(components);
+@import "./css/blocks/headline.css" layer(components);
+@import "./css/blocks/nav.css" layer(components);
+@import "./css/blocks/panel.css" layer(components);
+@import "./css/blocks/quote.css" layer(components);
+@import "./css/blocks/table.css" layer(components);
+@import "./css/blocks/transaction.css" layer(components);
 
 /* Utilities */
 @import "./css/utilities/cube-utils.css";
-@import "./css/utilities/region.css";
-@import "./css/utilities/visually-hidden.css";
+@import "./css/utilities/region.css" layer(utilities);
+@import "./css/utilities/visually-hidden.css" layer(utilities);
+
+/* Style Guide */
+@import "./css/styles-guide.css";

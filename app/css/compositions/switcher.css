@@ -17,7 +17,7 @@ Can be any acceptable flexbox alignment value.
 .switcher {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--gutter, var(--space-s-l));
+  gap: var(--gutter, var(--spacing-s-l));
   align-items: var(--switcher-vertical-alignment, flex-start);
 }
 
