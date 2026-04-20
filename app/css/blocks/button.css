@@ -1,3 +1,55 @@
-.button, button {
-    
+.button {
+    --button-bg: var(--color-primary);
+    --button-text: var(--color-light);
+    --button-x-padding: 2em;
+    --button-y-padding: 0.8em;
+    --button-gutter: 0.5ch;
+    --button-radius: 9999px;
+    --focus-color: var(--color-primary);
+
+    display: inline-flex;
+    gap: var(--button-gutter);
+    align-items: center;
+    line-height: var(--leading-flat);
+    border: none;
+    border-radius: var(--button-radius);
+    cursor: pointer;
+    background: var(--button-bg);
+    color: var(--button-text);
+    padding: var(--button-y-padding) var(--button-x-padding);
+    text-transform: capitalize;
+    letter-spacing: var(--uppercase-kerning);
+    text-decoration: none;
+    font-size: var(--text-step-0);
+    font-weight: var(--font-bold);
+}
+
+.button:hover {
+    filter: brightness(110%);
+}
+
+.button:active {
+    transform: scale(99%);
+}
+
+.button[data-button-variant="secondary"] {
+    --button-bg: var(--color-secondary);
+    --button-text: var(--color-primary);
+}
+
+.button[data-button-variant="link"] {
+    --button-bg: transparent;
+    --button-text: currentColor;
+    --button-radius: 0;
+    --button-x-padding: 0;
+    --button-y-padding: 0;
+}
+
+.button[data-button-variant="link"]:hover {
+    text-decoration: underline;
+}
+
+.button[data-button-variant="link"]:has(svg):hover {
+    border-bottom: 2px solid currentColor;
+    text-decoration: none;
 }
