@@ -14,10 +14,10 @@
   --font-mono: "IBM Plex Mono", "DM Mono", "monospace";
   
   /* Font Weights */
-  --font-weight-regular: 400;
-  --font-weight-medium: 500;
-  --font-weight-bold: 700;
-  --font-weight-black: 900;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-bold: 700;
+  --font-black: 900;
   
   /* Fluid Type Scale (Utopia-style) */
   --text-step-0: clamp(1.125rem, 0.99rem + 0.68vw, 1.5rem);
@@ -74,10 +74,10 @@
   --font-mono: var(--font-mono);
 
   /* Font Weights */
-  --font-weight-regular: var(--font-weight-regular);
-  --font-weight-medium: var(--font-weight-medium);
-  --font-weight-bold: var(--font-weight-bold);
-  --font-weight-black: var(--font-weight-black);
+  --font-weight-regular: var(--font-regular);
+  --font-weight-medium: var(--font-medium);
+  --font-weight-bold: var(--font-bold);
+  --font-weight-black: var(--font-black);
 
   /* Fluid Type Scale (Utopia-style) */
   --text-step-0: var(--text-step-0);

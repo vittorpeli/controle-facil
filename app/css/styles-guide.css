@@ -1,0 +1,158 @@
+.styles-guide {
+    --wrapper-max-width: 1500px;
+    --stroke: 1px solid currentColor;
+}
+
+.styles-guide__header {
+  padding: var(--spacing-s) 0;
+  border-bottom: var(--stroke);
+}
+
+.styles-guide .sidebar {
+  --sidebar-target-width: 20rem;
+  container-type: inline-size;
+  border-bottom: var(--stroke);
+}
+
+.styles-guide__sidebar-inner {
+  border-bottom: var(--stroke);
+  height: 100%;
+}
+
+.styles-guide__nav {
+  text-transform: uppercase;
+  letter-spacing: var(--uppercase-kerning);
+  font-weight: var(--font-bold);
+  font-size: var(--size-step-0);
+  list-style-type: none;
+  padding: 0;
+  padding-top: var(--spacing-xs);
+}
+
+.styles-guide__nav a:not([aria-current]):not(:hover) {
+  text-decoration: none;
+  color: inherit;
+}
+
+.styles-guide__nav a.active {
+    text-decoration: underline;
+    color: var(--color-dark-glare);
+}
+
+.styles-guide__nav a:active, .styles-guide__nav a:hover {
+    color: var(--color-dark-glare);
+}
+
+.styles-guide__nav {
+  margin-block-start: var(--space-m);
+  margin-block-end: var(--space-xl);
+}
+
+/* Switch border when the sidebar wraps */
+@container (min-width: 75vw) {
+  .styles-guide__sidebar-inner {
+    border-right: var(--stroke);
+    border-bottom: 0;
+  }
+}
+
+.styles-guide__sidebar h2 {
+  --flow-spacing: var(--spacing-l);
+  font-size: var(--size-step-6);
+}
+
+.styles-guide__swatch {
+  width: 40px;
+  aspect-ratio: 1/1;
+  border: var(--stroke);
+  border-radius: var(--radius-m);
+}
+
+.styles-guide__preview-frame {
+  width: 100%;
+  border: var(--stroke);
+  min-height: 25rem;
+  resize: auto;
+}
+
+.styles-guide .header-anchor {
+  font-size: 0.8em;
+  text-decoration: none;
+}
+
+.styles-guide__nav {
+  text-transform: uppercase;
+  letter-spacing: var(--uppercase-kerning);
+  font-weight: var(--font-bold);
+  font-size: var(--size-step-0);
+}
+
+.styles-guide__nav a:not([aria-current]):not(:hover) {
+  text-decoration: none;
+}
+
+.styles-guide__nav[role='list'] {
+  margin-block-start: var(--spacing-m);
+  margin-block-end: var(--spacing-xl);
+}
+
+.styles-guide__toc {
+  --gutter: 0.5em;
+
+  display: flex;
+  align-items: center;
+  border-block: var(--stroke);
+  padding-block: var(--spacing-s);
+  font-size: var(--size-step-00);
+  font-weight: var(--font-bold);
+  gap: var(--gutter);
+}
+
+.styles-guide__toc p {
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.styles-guide__toc ul {
+  display: flex;
+  overflow-x: auto;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.styles-guide__toc li {
+  display: flex;
+  flex-shrink: 0;
+}
+
+.styles-guide__toc li + li {
+  /* Overrides a more specific prose style without having to write a horror selector */
+  margin: 0 !important;
+
+  &::before {
+    content: '/';
+    display: block;
+    margin-inline-end: var(--gutter);
+  }
+}
+
+.styles-guide__toc a {
+  text-underline-offset: 0.1lh;
+}
+
+.styles-guide__nav li + li {
+  margin-block-start: 0.45em;
+}
+
+.styles-guide__nav [aria-current='page'] {
+  font-weight: var(--font-bold);
+}
+
+.styles-guide .switcher > * {
+  max-width: 100%;
+}
+
+.styles-guide .prose {
+  padding-bottom: var(--spacing-2xl);
+}

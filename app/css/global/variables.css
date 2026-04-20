@@ -11,4 +11,5 @@
   --radius-m: 0.75rem;
   --radius-l: 2.5rem;
   --leading-standard: 1.5;
+  --uppercase-kerning: 0.04ch;
 }
