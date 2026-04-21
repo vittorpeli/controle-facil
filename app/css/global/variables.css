@@ -10,6 +10,7 @@
   --radius-s: 0.2rem;
   --radius-m: 0.75rem;
   --radius-l: 2.5rem;
+  --radius-full: 9999px;
   --leading-standard: 1.5;
   --uppercase-kerning: 0.04ch;
 }

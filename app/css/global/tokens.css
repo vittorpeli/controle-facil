@@ -20,6 +20,8 @@
   --font-black: 900;
   
   /* Fluid Type Scale (Utopia-style) */
+  --text-step--2: clamp(0.8889rem, 0.884rem + 0.02vw, 0.9rem);
+  --text-step--1: clamp(1rem, 0.9452rem + 0.2247vw, 1.125rem);
   --text-step-0: clamp(1.125rem, 0.99rem + 0.68vw, 1.5rem);
   --text-step-1: clamp(1.25rem, 1.07rem + 0.91vw, 1.75rem);
   --text-step-2: clamp(1.5rem, 1.32rem + 0.91vw, 2.0rem);
@@ -80,6 +82,8 @@
   --font-weight-black: var(--font-black);
 
   /* Fluid Type Scale (Utopia-style) */
+  --text-step--2: var(--text-step--2);
+  --text-step--1: var(--text-step--1);
   --text-step-0: var(--text-step-0);
   --text-step-1: var(--text-step-1);
   --text-step-2: var(--text-step-2);
