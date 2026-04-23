@@ -1,0 +1,34 @@
+.chart-container {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--color-light);
+    border-radius: var(--radius-xl);
+    padding: var(--spacing-l);
+}
+
+.chart-legend {
+    --gutter: var(--spacing-xs);
+}
+
+.chart-legend__dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.chart-canvas {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    overflow: hidden;
+    border-bottom-left-radius: var(--radius-l);
+    border-bottom-right-radius: var(--radius-l);
+}
+
+.chart-canvas__svg {
+    width: 100%;
+    height: 100%;
+    opacity: 0.8;
+}

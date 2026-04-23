@@ -1,0 +1,66 @@
+import { cn } from "~/lib/utils"
+
+export const ChartContainer = ({ children, height = 300, className }: { children: React.ReactNode; height?: number; className?: string }) => (
+  <div
+    className={cn("chart-container relative w-full", className)}
+    style={{ height: `${height}px` }}
+  >
+    {children}
+  </div>
+)
+
+export const ChartLegend = ({item, className}: { item: { colorClass: string; label: string }[]; className?: string }) => (
+  <div className={cn("cluster relative z-10", className)}>
+    {item.map((item) => (
+      <div key={item.label} className="chart-legend cluster">
+        <div className={`chart-legend__dot ${item.colorClass}`} />
+        <span className="text-step--2 text-dark-glare font-medium">{item.label}</span>
+      </div>
+    ))}
+  </div>
+)
+
+// Wrapper do SVG com o Gradient base
+export const ChartCanvas = ({ className, children, height, width = 1000 }: {className?: string; children: React.ReactNode; height: number; width?: number }) => (
+    <div className={cn("chart-canvas", className)}>
+        <svg
+        className="chart-canvas__svg"
+        preserveAspectRatio="none"
+        viewBox={`0 0 ${width} ${height}`}
+        >
+            <title>Chart Canvas</title>
+            <defs>
+                <linearGradient id="incomeGrad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stopColor="#047857" stopOpacity="0.2" />
+                <stop offset="100%" stopColor="#047857" stopOpacity="0" />
+                </linearGradient>
+            </defs>
+            {children}
+        </svg>
+    </div>
+)
+
+// Elementos do Gráfico (Linhas e Áreas)
+export const ChartLine = ({
+  path,
+  color,
+  strokeWidth = '2',
+  dashed = false,
+}: {
+  path: string;
+  color: string;
+  strokeWidth?: string;
+  dashed?: boolean;
+}) => (
+  <path
+    d={path}
+    fill="none"
+    stroke={color}
+    strokeWidth={strokeWidth}
+    strokeDasharray={dashed ? '4 4' : 'none'}
+  />
+)
+
+export const ChartArea = ({ path, fillUrl = 'incomeGrad' }: { path: string; fillUrl?: string }) => (
+  <path d={path} fill={`url(#${fillUrl})`} />
+)
