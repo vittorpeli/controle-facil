@@ -31,7 +31,7 @@
 @import "./css/blocks/nav.css" layer(components);
 @import "./css/blocks/panel.css" layer(components);
 @import "./css/blocks/quote.css" layer(components);
-@import "./css/blocks/table.css" layer(components);
+@import "./css/blocks/table.css";
 @import "./css/blocks/transaction.css" layer(components);
 
 /* Utilities */
