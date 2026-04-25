@@ -11,7 +11,7 @@ export default function StylesGuideHeadline() {
             <hr />
             <ComponentPresentation 
                 component={<Headline title="Title">View more</Headline>}
-                source={"<Headline title=\"Title\" description=\"Description\" />"}
+                source={"<Headline title=\"Title\">View more</Headline>"}
             />
         </>
     )
