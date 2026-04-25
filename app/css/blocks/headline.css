@@ -1,0 +1,11 @@
+.headline {
+    font-size: var(--text-step--1);
+}
+
+.headline > .button:nth-child(2) {
+  font-size: var(--text-step--1);
+}
+
+.headline.repel {
+    --gutter: var(--spacing-s-l);
+}
