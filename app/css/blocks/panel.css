@@ -1,0 +1,40 @@
+.panel {
+    --gradient-first-color: rgb(from var(--color-primary) r g b / 0.05);
+    --gradient-second-color: rgb(from var(--color-secondary) r g b / 0.5);
+    
+    padding-top: var(--spacing-xs);
+    padding-bottom: var(--spacing-xs);
+    border-radius: var(--radius-m);
+    border: none;
+    background-color: var(--gradient-first-color);
+    background: linear-gradient(45deg, var(--gradient-first-color) 50%, var(--gradient-second-color) 100%);
+}
+
+.panel__title {
+    display: inline-flex;
+    font-weight: var(--font-weight-bold);
+    font-size: var(--text-step--1);
+    gap: 0.5ch;
+    align-items: center;
+}
+
+.panel__title-icon {
+    --icon-background: var(--color-primary);
+    --icon-color: var(--color-light); 
+
+    width: 2ch;
+    height: 2ch;
+    border-radius: 50%;
+    padding: var(--spacing-2xs);
+    background-color: var(--icon-background);
+    color: var(--icon-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.panel__container.switcher {
+    --switcher-target-container-width: 20rem;
+    /* --gutter: var(--spacing-s-m);  */
+}
