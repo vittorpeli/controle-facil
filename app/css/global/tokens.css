@@ -6,6 +6,7 @@
   --color-secondary: #A7D5B8;
   --color-light: #E8ECE9;
   --color-error: #ba1a1a;
+  --color-mid: rgb(from var(--color-dark) r g b / 0.5);
   
   /* Font Family */
   --font-base: "Inter", "Segoe UI", "Roboto", "Helvetica Neue", "Arial", system-ui, sans-serif;
@@ -61,13 +62,13 @@
 
 @theme inline {
   /* Colors */
-  --color-*: initial;
   --color-primary: var(--color-primary);
   --color-dark: var(--color-dark);
   --color-dark-glare: var(--color-dark-glare);
   --color-secondary: var(--color-secondary);
   --color-light: var(--color-light);
   --color-error: var(--color-error);
+  --color-mid: var(--color-mid);
   
   /* Font Family */
   --font-base: var(--font-base);

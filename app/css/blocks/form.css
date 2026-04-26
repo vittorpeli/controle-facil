@@ -1,0 +1,260 @@
+/* Input */
+:root {
+    --transition-normal: 250ms;
+}
+
+.input {
+    --transition-normal: 250ms;
+    --padding-block: 0.65em;
+    --form-control-height: round(calc(2 * var(--padding-block) + 1em * 1.25), 1px);
+
+    appearance: none;
+    inline-size: 100%;
+    padding-inline: 0.75em;
+    padding-block: 0;
+    border: var(--stroke-width) solid var(--color-secondary);
+    border-radius: var(--radius-full);
+    height: var(--form-control-height);
+    box-shadow: var(--shadow-xs);
+
+    transition-property: border-color, box-shadow;
+    transition-timing-function: var(--ease-out);
+    transition-duration: var(--transition-normal);
+
+    font-size: var(--text-step--1);
+}
+
+.input:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-secondary) 25%, transparent);
+    outline: none;
+    border-color: var(--color-secondary);
+}
+
+.input[aria-invalid="true"]:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-error) 25%, transparent);
+    outline: none;
+    border-color: var(--color-error);
+}
+
+.input:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.input[data-size="xs"] {
+    font-size: var(--text-step--2);
+}
+
+.input[data-size="sm"] {
+    font-size: var(--text-step--1);
+}
+
+.input[data-size="md"] {
+    font-size: var(--text-step-0);
+}
+
+.input[data-size="lg"] {
+    font-size: var(--text-step-1);
+}
+
+/* Label */
+.label {
+    display: inline-block;
+    position: relative;
+    font-size: var(--text-step--1, inherit);
+    line-height: var(--leading-tight);
+}
+
+.label:not(:has(input[type="checkbox"])):not(:has(input[type="radio"])) {
+    font-weight: var(--font-weight-medium);
+}
+
+.label:has(
+        input:not(
+                [type="button"],
+                [type="checkbox"],
+                [type="color"],
+                [type="file"],
+                [type="hidden"],
+                [type="image"],
+                [type="radio"],
+                [type="reset"],
+                [type="submit"]
+            ),
+        textarea,
+        select
+    ) {
+    width: 100%;
+}
+
+.label + :is(input:not([type="checkbox"], [type="radio"]), textarea, select),
+.label > :is(input:not([type="checkbox"], [type="radio"]), textarea, select) {
+    margin-block-start: 0.5em;
+}
+
+/* Checkbox */
+.checkbox {
+    --checked-icon-color: var(--color-light);
+    --input-bg: rgb(from var(--color-primary) r g b / 0.05);
+
+    font: inherit;
+    font-size: var(--text-step--2);
+    appearance: none;
+    margin: 0;
+    background: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    width: 1.1em;
+    height: 1.1em;
+
+    background-color: var(--input-bg);
+    border: var(--stroke-width) solid var(--color-mid);
+    border-radius: min(0.4em, var(--radius-s));
+    box-shadow: var(--shadow-xs);
+    outline-style: none;
+    transition-property: border-color, box-shadow;
+    transition-timing-function: var(--ease-out);
+    transition-duration: var(--transition-normal);
+}
+
+.checkbox[data-state="checked"] {
+    background-color: var(--color-blue-500);
+    border-color: var(--color-dark);
+}
+
+.checkbox[data-state="checked"]:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-blue-500) 40%, transparent);
+    border-color: var(--color-blue-500);
+}
+
+.checkbox:focus-visible {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-neutral-400) 25%, transparent);
+    border-color: var(--color-neutral-400);
+}
+
+.checkbox:disabled,
+.checkbox:disabled + .label {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.checkbox .checkbox-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkbox .checkbox-indicator svg {
+    color: var(--checked-icon-color);
+    stroke-width: 3;
+    width: 1.1em;
+}
+
+/* Fieldset */
+/* InputGroup - The wrapper that provides visual appearance */
+.fieldset {
+    display: flex;
+    align-items: center;
+    inline-size: 100%;
+    min-height: 2.5rem;
+    padding: 0;
+    padding-inline: var(--spacing-xs);
+    border: none;
+    border-radius: var(--radius-full);
+    box-shadow: var(--shadow-xs);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+    gap: var(--spacing-3xs);
+}
+
+/* Adjust height for textarea */
+.fieldset:has(> textarea) {
+    min-height: auto;
+}
+
+/* Focus state - respond to child input focus */
+.fieldset:has([data-slot="fieldset-control"]:focus) {
+    --form-control-border-color: var(--color-primary, currentColor);
+    --focus-ring-color: var(--color-primary, currentColor);
+    outline: 2px solid var(--focus-ring-color);
+    outline-offset: 2px;
+}
+
+/* Error state - respond to child input with aria-invalid */
+.fieldset:has([data-slot="fieldset-control"][aria-invalid="true"]) {
+    --form-control-border-color: var(--color-error);
+}
+
+.fieldset:has([data-slot="fieldset-control"][aria-invalid="true"]:focus) {
+    --focus-ring-color: var(--color-error);
+}
+
+/* Disabled state */
+.fieldset[data-disabled="true"] {
+    border-color: var(--color-mid);
+    background-color: var(--color-mid);
+    opacity: 0.5;
+}
+
+/* InputGroupInput - Reset all visual styles, wrapper handles appearance */
+/* Using .input.fieldset__input for higher specificity to override base .input styles */
+.input.fieldset__input {
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding-inline: 0 !important;
+    padding-block: 0 !important;
+    min-height: auto !important;
+    inline-size: auto !important;
+    background-color: transparent !important;
+    flex: 1;
+}
+
+.input.fieldset__input:focus {
+    outline: none !important;
+    --form-control-border-color: transparent;
+    --focus-ring-color: transparent;
+}
+
+/* Utility classes for common patterns - users can customize or replace these */
+.fieldset__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+.fieldset__icon svg:not([class*="size-"]) {
+    inline-size: 1rem;
+    block-size: 1rem;
+}
+
+.fieldset__button {
+    --button-bg: transparent;
+    --button-text: var(--color-primary);
+
+    flex-shrink: 0;
+    padding: var(--spacing-3xs, 0.25rem);
+    color: var(--color-primary);
+    transition: background-color 150ms ease, color 150ms ease;
+}
+
+.fieldset__button:hover {
+    border: none;
+    filter: brightness(110%);
+}
+
+.fieldset__button:focus-visible {
+    outline: var(--focus-ring-width, 2px) var(--focus-ring-style, solid)
+        var(--focus-ring-color, currentColor);
+    outline-offset: 2px;
+}
+
+.fieldset__button svg:not([class*="size-"]) {
+    inline-size: 0.875em;
+    block-size: 0.875em;
+}

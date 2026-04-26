@@ -25,7 +25,7 @@
 @import "./css/blocks/prose.css" layer(components);
 @import "./css/blocks/card.css" layer(components);
 @import "./css/blocks/chart.css" layer(components);
-@import "./css/blocks/form.css" layer(components);
+@import "./css/blocks/form.css";
 @import "./css/blocks/header.css" layer(components);
 @import "./css/blocks/headline.css" layer(components);
 @import "./css/blocks/nav.css" layer(components);

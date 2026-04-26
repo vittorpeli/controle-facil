@@ -276,10 +276,8 @@ form > * + * {
 
 :is(input:not([type='checkbox'], [type='radio'], [type='color']), select, textarea) {
   padding: 0.5em 0.8em;
-  border-radius: var(--radius-s);
-  border: var(--stroke-solid);
-  background: var(--color-dark-glare);
-  color: var(--color-light);
+  background: var(--color-light);
+  color: var(--color-dark);
   width: 100%;
 
   &::placeholder {
