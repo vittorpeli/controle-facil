@@ -162,7 +162,7 @@
     min-height: 2.5rem;
     padding: 0;
     padding-inline: var(--spacing-xs);
-    border: none;
+    border: var(--stroke-width) solid var(--color-secondary);;
     border-radius: var(--radius-full);
     box-shadow: var(--shadow-xs);
     transition: border-color 150ms ease, box-shadow 150ms ease;

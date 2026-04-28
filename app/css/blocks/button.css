@@ -34,7 +34,7 @@
 
 .button[data-button-variant="secondary"] {
     --button-bg: var(--color-secondary);
-    --button-text: var(--color-primary);
+    --button-text: var(--color-dark-glare);
 }
 
 .button[data-button-variant="link"] {

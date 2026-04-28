@@ -1,0 +1,11 @@
+.auth-layout .sidebar {
+    --sidebar-target-width: 30rem;
+}
+
+.auth-layout__head {
+    background-color: var(--color-primary);
+    color: var(--color-light);
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}

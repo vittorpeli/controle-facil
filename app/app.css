@@ -33,6 +33,7 @@
 @import "./css/blocks/quote.css" layer(components);
 @import "./css/blocks/table.css";
 @import "./css/blocks/transaction.css" layer(components);
+@import "./css/blocks/auth-layout.css";
 
 /* Utilities */
 @import "./css/utilities/cube-utils.css";

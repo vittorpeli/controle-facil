@@ -24,12 +24,26 @@ EXCEPTIONS
   gap: var(--gutter, var(--spacing-s-l));
 }
 
-.sidebar > :first-child {
+.sidebar:not([data-direction]) > :first-child {
   flex-basis: var(--sidebar-target-width, 20rem);
   flex-grow: 1;
 }
 
-.sidebar > :last-child {
+.sidebar:not([data-direction]) > :last-child {
+  flex-basis: 0;
+  flex-grow: 999;
+  min-width: var(--sidebar-content-min-width, 50%);
+}
+
+/* 
+A flipped version where the sidebar is on the right
+*/
+.sidebar[data-direction='rtl'] > :last-child {
+  flex-basis: var(--sidebar-target-width, 20rem);
+  flex-grow: 1;
+}
+
+.sidebar[data-direction='rtl'] > :first-child {
   flex-basis: 0;
   flex-grow: 999;
   min-width: var(--sidebar-content-min-width, 50%);
