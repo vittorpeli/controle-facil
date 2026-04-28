@@ -15,6 +15,13 @@
       "when": 1777341636645,
       "tag": "0001_drop_users_table",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1777343454020,
+      "tag": "0002_groovy_paper_doll",
+      "breakpoints": true
     }
   ]
 }
