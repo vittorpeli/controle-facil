@@ -1,5 +1,8 @@
 import { Lock, Mail, User } from 'lucide-react'
 import { Form, Link } from 'react-router'
+import { makeRegisterUseCase } from '~/features/auth/application/use-cases/register'
+import { parseEmail } from '~/features/auth/core/email'
+import { DrizzleUsersRepository } from '~/features/auth/services/drizzle-users-repository'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader } from '~/ui/card'
 import {
@@ -8,12 +11,46 @@ import {
   FieldSetIcon,
   FieldSetInput,
 } from '~/ui/form'
+import type { Route } from './+types/_auth.register'
 
 export function meta() {
   return [
     { title: 'Cadastre-se' },
     { name: 'Crie sua conta', content: 'Cadastro' },
   ]
+}
+
+export async function action({ request }: Route.ActionArgs) {
+  const form = await request.formData()
+
+  const rawName = form.get('name')?.toString() ?? ''
+  const rawEmail = form.get('email')?.toString() ?? ''
+  const rawPass = form.get('password')?.toString() ?? ''
+
+  const parsedEmail = parseEmail(rawEmail)
+  if (parsedEmail.kind === 'err') {
+    return Response.json({ error: parsedEmail.error.message }, { status: 422 })
+  }
+
+  const register = makeRegisterUseCase(new DrizzleUsersRepository())
+
+  try {
+    const { user } = await register({
+      userName: rawName,
+      email: parsedEmail.value,
+      password: rawPass,
+    })
+
+    return Response.json({ userId: user.id }, { status: 201 })
+  } catch (err) {
+    if (
+      err instanceof Error &&
+      err.message === 'user already exists with that email'
+    ) {
+      return Response.json({ error: err.message }, { status: 409 })
+    }
+    throw err
+  }
 }
 
 export default function RegisterForm() {
