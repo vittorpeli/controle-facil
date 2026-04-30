@@ -1,5 +1,5 @@
 import { Lock, Mail, User } from 'lucide-react'
-import { Form, Link } from 'react-router'
+import { data, Form, Link, redirect } from 'react-router'
 import { makeRegisterUseCase } from '~/features/auth/application/use-cases/register'
 import { parseEmail } from '~/features/auth/core/email'
 import { DrizzleUsersRepository } from '~/features/auth/services/drizzle-users-repository'
@@ -35,25 +35,25 @@ export async function action({ request }: Route.ActionArgs) {
   const register = makeRegisterUseCase(new DrizzleUsersRepository())
 
   try {
-    const { user } = await register({
+    await register({
       userName: rawName,
       email: parsedEmail.value,
       password: rawPass,
     })
 
-    return Response.json({ userId: user.id }, { status: 201 })
+    return redirect('/login')
   } catch (err) {
     if (
       err instanceof Error &&
       err.message === 'user already exists with that email'
     ) {
-      return Response.json({ error: err.message }, { status: 409 })
+      return data({ error: err.message }, { status: 409 })
     }
     throw err
   }
 }
 
-export default function RegisterForm() {
+export default function RegisterForm({ actionData }: Route.ComponentProps) {
   return (
     <Card className="bg-light">
       <CardHeader>
@@ -65,7 +65,12 @@ export default function RegisterForm() {
         </p>
       </CardHeader>
       <CardContent className="flow">
-        <Form>
+        <Form method="post">
+          {actionData?.error && (
+            <p role="alert" className="text-step--2 text-error">
+              {actionData.error}
+            </p>
+          )}
           <FieldSet>
             <FieldSetButton>
               <FieldSetIcon>
