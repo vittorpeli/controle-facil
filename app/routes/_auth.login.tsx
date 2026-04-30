@@ -1,5 +1,10 @@
 import { ArrowRight, Lock, Mail } from 'lucide-react'
-import { Form, Link } from 'react-router'
+import { data, Form, Link, redirect } from 'react-router'
+import { makeSignInUseCase } from '~/features/auth/application/use-cases/sign-in'
+import { parseEmail } from '~/features/auth/core/email'
+import { DrizzleSessionsRepository } from '~/features/auth/services/drizze-sessions-repository'
+import { DrizzleUsersRepository } from '~/features/auth/services/drizzle-users-repository'
+import { sessionCookie } from '~/features/auth/services/session-cookie'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader } from '~/ui/card'
 import {
@@ -10,6 +15,7 @@ import {
   FieldSetInput,
   Label,
 } from '~/ui/form'
+import type { Route } from './+types/_auth.login'
 
 export function meta() {
   return [
@@ -18,7 +24,42 @@ export function meta() {
   ]
 }
 
-export default function LoginForm() {
+export async function action({ request }: Route.ActionArgs) {
+  const form = await request.formData()
+
+  const rawEmail = form.get('email')?.toString() ?? ''
+  const rawPassword = form.get('password')?.toString() ?? ''
+
+  const parsedEmail = parseEmail(rawEmail)
+  if (parsedEmail.kind === 'err') {
+    return data({ error: 'E-mail inválido' }, { status: 422 })
+  }
+
+  const signIn = makeSignInUseCase(
+    new DrizzleUsersRepository(),
+    new DrizzleSessionsRepository(),
+  )
+
+  try {
+    const { session } = await signIn({
+      email: parsedEmail.value,
+      password: rawPassword,
+    })
+
+    return redirect('/dashboard', {
+      headers: {
+        'Set-Cookie': await sessionCookie.serialize(session.token),
+      },
+    })
+  } catch (err) {
+    if (err instanceof Error && err.message === 'invalid credentials') {
+      return data({ error: 'E-mail ou senha inválidos.' }, { status: 401 })
+    }
+    throw err
+  }
+}
+
+export default function LoginForm({ actionData }: Route.ComponentProps) {
   return (
     <Card className="bg-light">
       <CardHeader>
@@ -30,14 +71,25 @@ export default function LoginForm() {
         </p>
       </CardHeader>
       <CardContent className="flow">
-        <Form>
+        <Form method="post">
+          {actionData?.error && (
+            <p role="alert" className="text-step--2 text-error">
+              {actionData.error}
+            </p>
+          )}
           <FieldSet>
             <FieldSetButton>
               <FieldSetIcon>
                 <Mail />
               </FieldSetIcon>
             </FieldSetButton>
-            <FieldSetInput type="text" placeholder="O Seu Melhor E-mail..." />
+            <FieldSetInput
+              type="email"
+              name="email"
+              placeholder="O Seu Melhor E-mail..."
+              autoComplete="email"
+              required
+            />
           </FieldSet>
 
           <FieldSet>
@@ -46,7 +98,13 @@ export default function LoginForm() {
                 <Lock />
               </FieldSetIcon>
             </FieldSetButton>
-            <FieldSetInput type="text" placeholder="Digite a sua senha" />
+            <FieldSetInput
+              type="password"
+              name="password"
+              placeholder="Digite a sua senha"
+              autoComplete="current-password"
+              required
+            />
           </FieldSet>
 
           <div className="repel">

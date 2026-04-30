@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 import { eq } from 'drizzle-orm'
 import { db } from '~/lib/db'
 import { users } from '~/lib/db/schema'
