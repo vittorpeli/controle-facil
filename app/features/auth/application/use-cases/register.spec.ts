@@ -1,17 +1,11 @@
 import bcrypt from 'bcryptjs'
 import { beforeEach, describe, expect, it } from 'vitest'
+import { validEmail } from '~/tests/helpers'
 import { InMemoryUsersRepository } from '~/tests/repositories/in-memory-users-repository'
-import { parseEmail } from '../../core/email'
 import { makeRegisterUseCase } from './register'
 
 let usersRepository: InMemoryUsersRepository
 let sut: ReturnType<typeof makeRegisterUseCase>
-
-function validEmail(raw: string) {
-  const result = parseEmail(raw)
-  if (result.kind === 'err') throw new Error(`Invalid test email: ${raw}`)
-  return result.value
-}
 
 describe('Register Use Case', () => {
   beforeEach(() => {
