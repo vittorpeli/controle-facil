@@ -28,7 +28,7 @@
 @import "./css/blocks/form.css";
 @import "./css/blocks/header.css" layer(components);
 @import "./css/blocks/headline.css" layer(components);
-@import "./css/blocks/nav.css" layer(components);
+@import "./css/blocks/nav.css";
 @import "./css/blocks/panel.css" layer(components);
 @import "./css/blocks/quote.css" layer(components);
 @import "./css/blocks/table.css";

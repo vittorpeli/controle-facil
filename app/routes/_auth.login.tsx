@@ -46,7 +46,7 @@ export async function action({ request }: Route.ActionArgs) {
       password: rawPassword,
     })
 
-    return redirect('/dashboard', {
+    return redirect('/app', {
       headers: {
         'Set-Cookie': await sessionCookie.serialize(session.token),
       },

@@ -12,7 +12,7 @@
 
 .nav__subtitle {
     font-family: var(--font-serif);
-    font-size: var(--text-step-0);
+    font-size: var(--text-step--1);
     line-height: var(--leading-normal);
     font-weight: var(--font-weight-regular);
     font-style: italic;
@@ -64,7 +64,7 @@
     color: inherit;
 }
 
-.nav__item:hover, .nav__item:active {
+.nav__item:hover, .nav__item:active, .nav__item:has(a.active) {
     filter: brightness(110%);
     border-right: 1px solid var(--color-secondary);
     cursor: pointer;

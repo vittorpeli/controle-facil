@@ -1,4 +1,4 @@
-import { NavLink } from "react-router"
+import { NavLink } from 'react-router'
 
 export function NavItem({
   label,
@@ -12,7 +12,9 @@ export function NavItem({
   return (
     <li className="nav__item">
       {icon}
-      <NavLink to={to}>{label}</NavLink>
+      <NavLink className={({ isActive }) => (isActive ? 'active' : '')} to={to}>
+        {label}
+      </NavLink>
     </li>
   )
 }
