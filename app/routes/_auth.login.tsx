@@ -86,7 +86,7 @@ export default function LoginForm({ actionData }: Route.ComponentProps) {
             <FieldSetInput
               type="email"
               name="email"
-              placeholder="O Seu Melhor E-mail..."
+              placeholder="Digite o seu E-mail..."
               autoComplete="email"
               required
             />

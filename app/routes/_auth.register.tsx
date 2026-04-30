@@ -77,7 +77,12 @@ export default function RegisterForm({ actionData }: Route.ComponentProps) {
                 <User />
               </FieldSetIcon>
             </FieldSetButton>
-            <FieldSetInput type="text" placeholder="Digite o seu nome" />
+            <FieldSetInput
+              type="text"
+              name="name"
+              placeholder="Digite o seu nome"
+              required
+            />
           </FieldSet>
 
           <FieldSet>
@@ -86,7 +91,12 @@ export default function RegisterForm({ actionData }: Route.ComponentProps) {
                 <Mail />
               </FieldSetIcon>
             </FieldSetButton>
-            <FieldSetInput type="text" placeholder="O Seu Melhor E-mail..." />
+            <FieldSetInput
+              type="email"
+              name="email"
+              placeholder="O Seu Melhor E-mail..."
+              required
+            />
           </FieldSet>
 
           <FieldSet>
@@ -95,7 +105,12 @@ export default function RegisterForm({ actionData }: Route.ComponentProps) {
                 <Lock />
               </FieldSetIcon>
             </FieldSetButton>
-            <FieldSetInput type="text" placeholder="Digite a sua senha" />
+            <FieldSetInput
+              type="password"
+              name="password"
+              placeholder="Digite a sua senha"
+              required
+            />
           </FieldSet>
 
           <div>
