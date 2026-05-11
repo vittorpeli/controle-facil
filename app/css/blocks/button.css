@@ -20,7 +20,7 @@
     text-transform: capitalize;
     letter-spacing: var(--uppercase-kerning);
     text-decoration: none;
-    font-size: var(--text-step-0);
+    font-size: var(--text-step--1);
     font-weight: var(--font-bold);
 }
 

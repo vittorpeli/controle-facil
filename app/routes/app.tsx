@@ -35,7 +35,10 @@ export default function AppLayout() {
   const user = useAuthenticatedUser()
 
   return (
-    <div className="sidebar h-screen">
+    <div
+      className="sidebar h-screen"
+      style={{ '--sidebar-target-width': '12rem' } as React.CSSProperties}
+    >
       <Nav
         title="Controle Fácil"
         subtitle="O Seu Sistema Financeiro"

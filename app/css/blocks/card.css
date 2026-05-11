@@ -17,6 +17,10 @@
     padding-inline: var(--spacing-m);
 }
 
+.card__header svg {
+    color: var(--color-dark-glare);
+}
+
 .card__media {
     display: flex;
     overflow: hidden;

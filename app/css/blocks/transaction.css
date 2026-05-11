@@ -5,6 +5,10 @@
     cursor: pointer;
 }
 
+.transaction.wrapper {
+    --gutter: var(--spacing-2xs);
+}
+
 .transaction:hover {
     transform: translateY(-2px);
     transition: all var(--transition-movement);

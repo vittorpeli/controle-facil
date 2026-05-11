@@ -9,3 +9,7 @@
 .headline.repel {
     --gutter: var(--spacing-s-l);
 }
+
+.headline.repel:not(:has(span)) {
+    --gutter: 0;
+}
