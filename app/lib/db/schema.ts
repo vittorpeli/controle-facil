@@ -55,6 +55,9 @@ export const accounts = sqliteTable('accounts', {
   name: text('name').notNull(),
   type: text('type', { enum: accountTypeEnum }).notNull(),
   institution: text('institution'),
+  isArchived: integer('is_archived', { mode: 'boolean' })
+    .notNull()
+    .default(false),
   createdAt: text('created_at').notNull().default(sql`(datetime('now'))`),
 })
 

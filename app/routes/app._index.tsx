@@ -60,7 +60,7 @@ export default function AppIndex() {
 
   return (
     <div className="flow flow-space-2xl">
-      {/* Header da página com saldo atual, depois botão para página de transações */}
+      {/* Header da página com saldo atual (soma de saldo de todas as contas ativas), depois botão para página de transações */}
       <Header title="$34.820,50" subtitle="Saldo Atual">
         <Button>
           <span>Ver Mais</span>
