@@ -3,6 +3,7 @@ import { and, eq, ne, sql } from 'drizzle-orm'
 import { db } from '~/lib/db'
 import { transactions } from '~/lib/db/schema'
 import type { TransactionsRepository } from '../application/ports/transactions-repository'
+import type { Transaction } from '../core/transaction'
 
 export class DrizzleTransactionsRepository implements TransactionsRepository {
   async getBalanceByAccountId(accountId: UUID): Promise<number> {
@@ -22,5 +23,28 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
       .get()
 
     return result?.balance ?? 0
+  }
+
+  async createTransfer({
+    outbound,
+    inbound,
+  }: {
+    outbound: Transaction
+    inbound: Transaction
+  }): Promise<{ outbound: Transaction; inbound: Transaction }> {
+    await db.transaction(async (tx) => {
+      await tx.insert(transactions).values({
+        ...outbound,
+        date: outbound.date.toISOString(),
+        createdAt: outbound.createdAt.toISOString(),
+      })
+      await tx.insert(transactions).values({
+        ...inbound,
+        date: inbound.date.toISOString(),
+        createdAt: inbound.createdAt.toISOString(),
+      })
+    })
+
+    return { outbound, inbound }
   }
 }
