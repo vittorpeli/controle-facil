@@ -75,7 +75,7 @@ describe('List Accounts Use Case', () => {
     transactionsRepository.items.push(
       { accountId: account.id, type: 'income', amount: 10000 },
       { accountId: account.id, type: 'expense', amount: 2000 },
-      { accountId: account.id, type: 'transfer', amount: 1000 },
+      { accountId: account.id, type: 'transfer_out', amount: 1000 },
     )
 
     const { accounts } = await sut({ userId: USER_ID })
