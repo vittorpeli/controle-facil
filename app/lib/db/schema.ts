@@ -103,7 +103,12 @@ export const goals = sqliteTable(
 
 // Transactions
 
-export const transactionTypeEnum = ['income', 'expense', 'transfer'] as const
+export const transactionTypeEnum = [
+  'income',
+  'expense',
+  'transfer_out',
+  'transfer_in',
+] as const
 export type TransactionType = (typeof transactionTypeEnum)[number]
 
 export const transactionStatusEnum = [
@@ -123,6 +128,7 @@ export const transactions = sqliteTable(
     accountId: text('account_id')
       .notNull()
       .references(() => accounts.id, { onDelete: 'restrict' }),
+    transferGroupId: text('transfer_group_id'), // for linking transfer_out and transfer_in
     type: text('type', { enum: transactionTypeEnum }).notNull(),
     amount: real('amount').notNull(),
     date: text('date').notNull(),
