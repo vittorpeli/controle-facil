@@ -3,8 +3,10 @@ import bcrypt from 'bcryptjs'
 import { parseEmail } from '~/features/auth/core/email'
 import type { Session } from '~/features/auth/core/session'
 import type { User } from '~/features/auth/core/user'
+import type { Goal } from '~/features/goals/core/goal'
 import type { Account } from '~/features/transactions/core/account'
 import type { InMemoryAccountsRepository } from './repositories/in-memory-accounts-repository'
+import type { InMemoryGoalsRepository } from './repositories/in-memory-goals-repository'
 import type { InMemorySessionsRepository } from './repositories/in-memory-sessions-repository'
 import type { InMemoryUsersRepository } from './repositories/in-memory-users-repository'
 
@@ -57,6 +59,23 @@ export function makeAccount(
     type: 'checking',
     institution: 'Itaú',
     isArchived: false,
+    createdAt: new Date(),
+    ...overrides,
+  })
+}
+
+export function makeGoal(
+  userId: UUID,
+  repo: InMemoryGoalsRepository,
+  overrides: Partial<Goal> = {},
+): Promise<Goal> {
+  return repo.create({
+    id: randomUUID() as UUID,
+    userId,
+    name: 'Fundo de Emergência',
+    targetAmount: 10_000,
+    deadline: new Date(2030, 11, 31),
+    description: null,
     createdAt: new Date(),
     ...overrides,
   })

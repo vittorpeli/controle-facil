@@ -9,3 +9,10 @@ export type Goal = {
   description: string | null
   createdAt: Date
 }
+
+export type GoalWithProgress = Goal & {
+  currentAmount: number
+  progress: number
+  isCompleted: boolean
+  projectedCompletionDate: Date | null
+}
