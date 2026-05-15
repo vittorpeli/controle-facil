@@ -17,4 +17,14 @@ export class InMemoryGoalsRepository implements GoalsRepository {
   async findAllByUserId(userId: UUID): Promise<Goal[]> {
     return this.items.filter((g) => g.userId === userId)
   }
+
+  async update(goal: Goal): Promise<Goal> {
+    const index = this.items.findIndex((g) => g.id === goal.id)
+
+    if (index === -1) throw new Error('Goal not found')
+
+    this.items[index] = goal
+
+    return goal
+  }
 }
