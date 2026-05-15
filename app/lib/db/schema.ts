@@ -108,6 +108,7 @@ export const transactionTypeEnum = [
   'expense',
   'transfer_out',
   'transfer_in',
+  'contribution',
 ] as const
 export type TransactionType = (typeof transactionTypeEnum)[number]
 

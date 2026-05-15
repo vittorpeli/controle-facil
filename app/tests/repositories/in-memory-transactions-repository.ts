@@ -4,7 +4,7 @@ import type { Transaction } from '~/features/transactions/core/transaction'
 
 type FakeTransaction = {
   accountId: UUID
-  type: 'income' | 'expense' | 'transfer_in' | 'transfer_out'
+  type: 'income' | 'expense' | 'transfer_in' | 'transfer_out' | 'contribution'
   amount: number
 }
 
@@ -22,10 +22,25 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
       .reduce((sum, t) => sum + t.amount, 0)
 
     const outflow = accountTransactions
-      .filter((t) => t.type === 'expense' || t.type === 'transfer_out')
+      .filter(
+        (t) =>
+          t.type === 'expense' ||
+          t.type === 'transfer_out' ||
+          t.type === 'contribution',
+      )
       .reduce((sum, t) => sum + t.amount, 0)
 
     return income - outflow
+  }
+
+  async create(transaction: Transaction): Promise<Transaction> {
+    this.transactions.push(transaction)
+    this.items.push({
+      accountId: transaction.accountId,
+      type: transaction.type as FakeTransaction['type'],
+      amount: transaction.amount,
+    })
+    return transaction
   }
 
   async createTransfer({
