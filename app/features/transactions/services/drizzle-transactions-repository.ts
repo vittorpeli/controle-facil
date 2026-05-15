@@ -10,7 +10,7 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
     const result = await db
       .select({
         balance: sql<number>`
-            COALESCE(SUM(CASE WHEN type IN ('income', 'transfer_in') THEN ${transactions.amount} ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN ${transactions.type} IN ('expense', 'transfer_out') THEN ${transactions.amount} ELSE 0 END), 0)
+            COALESCE(SUM(CASE WHEN type IN ('income', 'transfer_in') THEN ${transactions.amount} ELSE 0 END), 0) - COALESCE(SUM(CASE WHEN ${transactions.type} IN ('expense', 'transfer_out', 'contribution') THEN ${transactions.amount} ELSE 0 END), 0)
         `.as('balance'),
       })
       .from(transactions)
@@ -23,6 +23,24 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
       .get()
 
     return result?.balance ?? 0
+  }
+
+  async create(transaction: Transaction): Promise<Transaction> {
+    await db.insert(transactions).values({
+      id: transaction.id,
+      userId: transaction.userId,
+      accountId: transaction.accountId,
+      type: transaction.type,
+      amount: transaction.amount,
+      date: transaction.date.toISOString().slice(0, 10),
+      categoryId: transaction.categoryId ?? null,
+      description: transaction.description ?? null,
+      goalId: transaction.goalId ?? null,
+      transferGroupId: transaction.transferGroupId ?? null,
+      status: transaction.status,
+      createdAt: transaction.createdAt.toISOString(),
+    })
+    return transaction
   }
 
   async createTransfer({
