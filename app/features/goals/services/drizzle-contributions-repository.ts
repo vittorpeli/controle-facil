@@ -21,8 +21,8 @@ export class DrizzleContributionsRepository implements ContributionsRepository {
       .where(
         and(
           eq(transactions.goalId, goalId),
-          eq(transactions.type, 'income'),
-          ne(transactions.status, 'cleared'),
+          eq(transactions.type, 'contribution'),
+          ne(transactions.status, 'cancelled'),
         ),
       )
       .get()
