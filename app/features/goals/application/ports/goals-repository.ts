@@ -6,4 +6,5 @@ export interface GoalsRepository {
   findById(id: UUID): Promise<Goal | null>
   findAllByUserId(userId: UUID): Promise<Goal[]>
   update(goal: Goal): Promise<Goal>
+  delete(id: UUID): Promise<void>
 }

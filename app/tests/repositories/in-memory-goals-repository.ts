@@ -27,4 +27,10 @@ export class InMemoryGoalsRepository implements GoalsRepository {
 
     return goal
   }
+
+  async delete(id: UUID): Promise<void> {
+    const index = this.items.findIndex((g) => g.id === id)
+    if (index === -1) throw new Error('Goal not found')
+    this.items.splice(index, 1)
+  }
 }
