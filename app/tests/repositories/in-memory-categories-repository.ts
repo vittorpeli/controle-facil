@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 import type { CategoriesRepository } from '~/features/categories/application/ports/categories-repository'
 import type { Category } from '~/features/categories/core/category'
 
@@ -25,6 +25,10 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
       const archivedOk = includeArchived || !c.isArchived
       return accessible && archivedOk
     })
+  }
+
+  async findChildrenByParentId(parentId: UUID): Promise<Category[]> {
+    return this.items.filter((c) => c.parentId === parentId)
   }
 
   async update(category: Category): Promise<Category> {

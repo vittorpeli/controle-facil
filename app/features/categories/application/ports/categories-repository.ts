@@ -8,5 +8,6 @@ export interface CategoriesRepository {
     userId: UUID,
     options?: { includeArchived?: boolean },
   ): Promise<Category[]>
+  findChildrenByParentId(parentId: UUID): Promise<Category[]>
   update(category: Category): Promise<Category>
 }
