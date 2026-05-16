@@ -6,10 +6,12 @@ import type { User } from '~/features/auth/core/user'
 import type { Budget } from '~/features/budget/core/budget'
 import type { Goal } from '~/features/goals/core/goal'
 import type { Account } from '~/features/transactions/core/account'
+import type { Transaction } from '~/features/transactions/core/transaction'
 import type { InMemoryAccountsRepository } from './repositories/in-memory-accounts-repository'
 import type { InMemoryBudgetsRepository } from './repositories/in-memory-budgets-repository'
 import type { InMemoryGoalsRepository } from './repositories/in-memory-goals-repository'
 import type { InMemorySessionsRepository } from './repositories/in-memory-sessions-repository'
+import type { InMemoryTransactionsRepository } from './repositories/in-memory-transactions-repository'
 import type { InMemoryUsersRepository } from './repositories/in-memory-users-repository'
 
 export function validEmail(raw: string) {
@@ -62,6 +64,28 @@ export function makeAccount(
     institution: 'Itaú',
     isArchived: false,
     createdAt: new Date(),
+    ...overrides,
+  })
+}
+
+export function makeTransaction(
+  userId: UUID,
+  repo: InMemoryTransactionsRepository,
+  overrides: Partial<Transaction> = {},
+): Promise<Transaction> {
+  return repo.create({
+    id: randomUUID() as UUID,
+    userId,
+    accountId: randomUUID() as UUID,
+    categoryId: randomUUID() as UUID,
+    transferGroupId: null,
+    type: 'income',
+    date: new Date(2026, 3, 1),
+    amount: 5000,
+    createdAt: new Date(),
+    description: null,
+    goalId: null,
+    status: 'cleared',
     ...overrides,
   })
 }

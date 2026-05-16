@@ -1,5 +1,8 @@
 import type { UUID } from 'node:crypto'
-import type { TransactionsRepository } from '~/features/transactions/application/ports/transactions-repository'
+import type {
+  TransactionFilters,
+  TransactionsRepository,
+} from '~/features/transactions/application/ports/transactions-repository'
 import type { Transaction } from '~/features/transactions/core/transaction'
 
 type FakeTransaction = {
@@ -66,5 +69,38 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
     )
 
     return { outbound, inbound }
+  }
+
+  async findAllByUserId(
+    userId: UUID,
+    filters?: TransactionFilters,
+  ): Promise<Transaction[]> {
+    let result = this.transactions.filter((t) => t.userId === userId)
+
+    if (filters?.accountId) {
+      result = result.filter((t) => t.accountId === filters.accountId)
+    }
+
+    if (filters?.categoryId) {
+      result = result.filter((t) => t.categoryId === filters.categoryId)
+    }
+
+    if (filters?.type) {
+      const types = Array.isArray(filters.type) ? filters.type : [filters.type]
+      result = result.filter((t) => types.includes(t.type))
+    }
+
+    if (filters?.month !== undefined && filters.year !== undefined) {
+      result = result.filter((t) => {
+        return (
+          t.date.getMonth() + 1 === filters.month &&
+          t.date.getFullYear() === filters.year
+        )
+      })
+    } else if (filters?.year !== undefined) {
+      result = result.filter((t) => t.date.getFullYear() === filters.year)
+    }
+
+    return result.sort((a, b) => b.date.getTime() - a.date.getTime())
   }
 }
