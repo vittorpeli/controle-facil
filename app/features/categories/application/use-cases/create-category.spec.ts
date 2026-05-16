@@ -26,7 +26,7 @@ describe('Create Category Use Case', () => {
   })
 
   it('should persist the category', async () => {
-    const { category } = await sut({ userId: USER_ID, name: 'Lazer' })
+    await sut({ userId: USER_ID, name: 'Lazer' })
     expect(categoriesRepository.items).toHaveLength(1)
   })
 
