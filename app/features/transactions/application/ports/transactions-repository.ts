@@ -20,4 +20,6 @@ export interface TransactionsRepository {
     userId: UUID,
     filters?: TransactionFilters,
   ): Promise<Transaction[]>
+  findById(id: UUID): Promise<Transaction | null>
+  update(transaction: Transaction): Promise<Transaction>
 }

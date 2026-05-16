@@ -103,4 +103,15 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
 
     return result.sort((a, b) => b.date.getTime() - a.date.getTime())
   }
+
+  async findById(id: UUID): Promise<Transaction | null> {
+    return this.transactions.find((t) => t.id === id) ?? null
+  }
+
+  async update(transaction: Transaction): Promise<Transaction> {
+    const index = this.transactions.findIndex((t) => t.id === transaction.id)
+    if (index === -1) throw new Error('transaction not found')
+    this.transactions[index] = transaction
+    return transaction
+  }
 }
