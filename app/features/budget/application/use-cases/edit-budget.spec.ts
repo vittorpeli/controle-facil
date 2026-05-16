@@ -9,7 +9,7 @@ const USER_ID = randomUUID() as UUID
 let budgetsRepository: InMemoryBudgetsRepository
 let sut: ReturnType<typeof makeEditBudgetUseCase>
 
-describe('Get Budget Use Case', () => {
+describe('Edit Budget Use Case', () => {
   beforeEach(() => {
     budgetsRepository = new InMemoryBudgetsRepository()
     sut = makeEditBudgetUseCase(budgetsRepository)
