@@ -114,4 +114,10 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
     this.transactions[index] = transaction
     return transaction
   }
+
+  async delete(id: UUID): Promise<void> {
+    const index = this.transactions.findIndex((t) => t.id === id)
+    if (index === -1) throw new Error('transaction not found')
+    this.transactions.splice(index, 1)
+  }
 }

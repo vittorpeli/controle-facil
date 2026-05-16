@@ -22,4 +22,5 @@ export interface TransactionsRepository {
   ): Promise<Transaction[]>
   findById(id: UUID): Promise<Transaction | null>
   update(transaction: Transaction): Promise<Transaction>
+  delete(id: UUID): Promise<void>
 }
