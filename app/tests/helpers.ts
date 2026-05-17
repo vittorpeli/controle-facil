@@ -173,8 +173,8 @@ export function makeOccurrence(
   return repo.create({
     id: randomUUID() as UUID,
     recurrenceId: randomUUID() as UUID,
-    referenceMonth: 6,
-    referenceYear: 2026,
+    referenceMonth: new Date().getMonth() + 1,
+    referenceYear: new Date().getFullYear(),
     dueDate: new Date(),
     status: 'paid',
     transactionId: randomUUID() as UUID,

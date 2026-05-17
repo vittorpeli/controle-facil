@@ -10,6 +10,10 @@ export class InMemoryOccurencesRepository implements OccurrencesRepository {
     return occurrence
   }
 
+  async findById(id: UUID): Promise<Occurrence | null> {
+    return this.items.find((occ) => occ.id === id) ?? null
+  }
+
   async findByRecurrenceIdAndDate(
     recurrenceId: UUID,
     month: number,
@@ -23,5 +27,12 @@ export class InMemoryOccurencesRepository implements OccurrencesRepository {
           occ.referenceYear === year,
       ) ?? null
     )
+  }
+
+  async update(occurrence: Occurrence): Promise<Occurrence> {
+    const index = this.items.findIndex((occ) => occ.id === occurrence.id)
+    if (index === -1) throw new Error('occurrence not found')
+    this.items[index] = occurrence
+    return occurrence
   }
 }
