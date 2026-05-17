@@ -8,7 +8,7 @@ const USER_ID = randomUUID() as UUID
 let recurrencesRepository: InMemoryRecurrencesRepository
 let sut: ReturnType<typeof makeCreateRecurrenceUseCase>
 
-describe('Create budget Use Case', () => {
+describe('Create recurrence Use Case', () => {
   beforeEach(() => {
     recurrencesRepository = new InMemoryRecurrencesRepository()
     sut = makeCreateRecurrenceUseCase(recurrencesRepository)

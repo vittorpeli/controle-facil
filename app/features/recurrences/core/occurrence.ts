@@ -6,7 +6,10 @@ export type { OccurrenceStatus }
 export type Occurrence = {
   id: UUID
   recurrenceId: UUID
+  referenceMonth: number
+  referenceYear: number
   dueDate: Date
   status: OccurrenceStatus
-  transactionId: UUID
+  transactionId?: UUID
+  createdAt: Date
 }

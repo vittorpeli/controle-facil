@@ -6,6 +6,7 @@ import type { User } from '~/features/auth/core/user'
 import type { Budget } from '~/features/budget/core/budget'
 import type { Category } from '~/features/categories/core/category'
 import type { Goal } from '~/features/goals/core/goal'
+import type { Occurrence } from '~/features/recurrences/core/occurrence'
 import type { Recurrence } from '~/features/recurrences/core/recurrence'
 import type { Account } from '~/features/transactions/core/account'
 import type { Transaction } from '~/features/transactions/core/transaction'
@@ -13,6 +14,7 @@ import type { InMemoryAccountsRepository } from './repositories/in-memory-accoun
 import type { InMemoryBudgetsRepository } from './repositories/in-memory-budgets-repository'
 import type { InMemoryCategoriesRepository } from './repositories/in-memory-categories-repository'
 import type { InMemoryGoalsRepository } from './repositories/in-memory-goals-repository'
+import type { InMemoryOccurencesRepository } from './repositories/in-memory-occurences-repository'
 import type { InMemoryRecurrencesRepository } from './repositories/in-memory-recurrences-repository'
 import type { InMemorySessionsRepository } from './repositories/in-memory-sessions-repository'
 import type { InMemoryTransactionsRepository } from './repositories/in-memory-transactions-repository'
@@ -159,6 +161,23 @@ export function makeRecurrence(
     accountId: randomUUID() as UUID,
     categoryId: null,
     isSubscription: false,
+    createdAt: new Date(),
+    ...overrides,
+  })
+}
+
+export function makeOccurrence(
+  repo: InMemoryOccurencesRepository,
+  overrides: Partial<Occurrence> = {},
+): Promise<Occurrence> {
+  return repo.create({
+    id: randomUUID() as UUID,
+    recurrenceId: randomUUID() as UUID,
+    referenceMonth: 6,
+    referenceYear: 2026,
+    dueDate: new Date(),
+    status: 'paid',
+    transactionId: randomUUID() as UUID,
     createdAt: new Date(),
     ...overrides,
   })
