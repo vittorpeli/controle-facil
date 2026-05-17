@@ -14,6 +14,20 @@ export class InMemoryCategoriesRepository implements CategoriesRepository {
     return this.items.find((c) => c.id === id) ?? null
   }
 
+  async findByNameAndUserId(
+    name: string,
+    userId: UUID,
+  ): Promise<Category | null> {
+    const normalizedName = name.trim().toLowerCase()
+    return (
+      this.items.find((c) => {
+        const accessible = c.userId === null || c.userId === userId
+        const comparedName = c.name.trim().toLowerCase() === normalizedName
+        return accessible && comparedName
+      }) ?? null
+    )
+  }
+
   async findAllAccessibleByUserId(
     userId: UUID,
     options?: { includeArchived?: boolean },

@@ -4,6 +4,7 @@ import type { Category } from '../../core/category'
 export interface CategoriesRepository {
   create(category: Category): Promise<Category>
   findById(id: UUID): Promise<Category | null>
+  findByNameAndUserId(name: string, userId: UUID): Promise<Category | null>
   findAllAccessibleByUserId(
     userId: UUID,
     options?: { includeArchived?: boolean },
