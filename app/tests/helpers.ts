@@ -128,7 +128,7 @@ export function makeBudget(
 
 export function makeCategory(
   repo: InMemoryCategoriesRepository,
-  overrides: Partial<Category>,
+  overrides: Partial<Category> = {},
 ): Promise<Category> {
   return repo.create({
     id: randomUUID() as UUID,

@@ -9,3 +9,9 @@ export type Budget = {
   limitAmount: number
   createdAt: Date
 }
+
+export type BudgetProgress = Budget & {
+  spentAmount: number
+  progressPercentage: number
+  status: 'safe' | 'warning' | 'danger'
+}

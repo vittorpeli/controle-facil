@@ -104,6 +104,19 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
     return result.sort((a, b) => b.date.getTime() - a.date.getTime())
   }
 
+  async findAllByUserIdAndDate(
+    userId: UUID,
+    month: number,
+    year: number,
+  ): Promise<Transaction[]> {
+    return this.transactions.filter(
+      (t) =>
+        t.userId === userId &&
+        t.date.getMonth() === month - 1 &&
+        t.date.getFullYear() === year,
+    )
+  }
+
   async findById(id: UUID): Promise<Transaction | null> {
     return this.transactions.find((t) => t.id === id) ?? null
   }

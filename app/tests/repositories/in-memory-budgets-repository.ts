@@ -39,6 +39,16 @@ export class InMemoryBudgetsRepository implements BudgetsRepository {
     return this.items.filter((b) => b.userId === userId)
   }
 
+  async findAllByUserIdAndDate(
+    userId: UUID,
+    month: number,
+    year: number,
+  ): Promise<Budget[]> {
+    return this.items.filter(
+      (b) => b.userId === userId && b.month === month && b.year === year,
+    )
+  }
+
   async findAllByMonthAndYear({
     userId,
     month,

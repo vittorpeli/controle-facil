@@ -20,6 +20,11 @@ export interface TransactionsRepository {
     userId: UUID,
     filters?: TransactionFilters,
   ): Promise<Transaction[]>
+  findAllByUserIdAndDate(
+    userId: UUID,
+    month: number,
+    year: number,
+  ): Promise<Transaction[]>
   findById(id: UUID): Promise<Transaction | null>
   update(transaction: Transaction): Promise<Transaction>
   delete(id: UUID): Promise<void>
