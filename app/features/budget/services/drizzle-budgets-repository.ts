@@ -2,8 +2,8 @@ import type { UUID } from 'node:crypto'
 import { and, eq } from 'drizzle-orm'
 import { db } from '~/lib/db'
 import { budgets } from '~/lib/db/schema'
-import type { Budget } from '../../core/budget'
-import type { BudgetsRepository } from '../ports/budgets-repository'
+import type { BudgetsRepository } from '../application/ports/budgets-repository'
+import type { Budget } from '../core/budget'
 
 function toDomain(row: typeof budgets.$inferSelect): Budget {
   return {
