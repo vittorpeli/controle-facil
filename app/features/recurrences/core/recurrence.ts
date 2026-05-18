@@ -9,7 +9,7 @@ export type Recurrence = {
   name: string
   amount: number
   frequency: Frequency
-  dueDay: number | null
+  dueDay: number
   accountId: UUID
   categoryId: UUID | null
   isSubscription: boolean

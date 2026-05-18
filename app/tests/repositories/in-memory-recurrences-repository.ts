@@ -17,17 +17,4 @@ export class InMemoryRecurrencesRepository implements RecurrencesRepository {
   async findAllByUserId(userId: UUID): Promise<Recurrence[]> {
     return this.items.filter((r) => r.userId === userId)
   }
-
-  async update(recurrence: Recurrence): Promise<Recurrence> {
-    const index = this.items.findIndex((r) => r.id === recurrence.id)
-    if (index === -1) throw new Error('recurrence not found')
-    this.items[index] = recurrence
-    return recurrence
-  }
-
-  async delete(id: UUID): Promise<void> {
-    const index = this.items.findIndex((r) => r.id === id)
-    if (index === -1) throw new Error('recurrence not found')
-    this.items.splice(index, 1)
-  }
 }
