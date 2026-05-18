@@ -202,6 +202,8 @@ export const recurrenceOccurrences = sqliteTable(
     recurrenceId: text('recurrence_id')
       .notNull()
       .references(() => recurrences.id, { onDelete: 'cascade' }),
+    referenceMonth: integer('reference_month').notNull(),
+    referenceYear: integer('reference_year').notNull(),
     dueDate: text('due_date').notNull(), // ISO date string
     status: text('status', { enum: occurrenceStatusEnum })
       .notNull()
@@ -209,6 +211,7 @@ export const recurrenceOccurrences = sqliteTable(
     transactionId: text('transaction_id').references(() => transactions.id, {
       onDelete: 'set null',
     }),
+    createdAt: text('created_at').notNull().default(sql`(datetime('now'))`),
   },
   (t) => [
     index('recurrence_occurrences_recurrence_id_idx').on(t.recurrenceId),

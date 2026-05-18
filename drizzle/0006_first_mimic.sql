@@ -1,0 +1,1 @@
+ALTER TABLE `recurrence_occurrences` ADD `created_at` text DEFAULT (datetime('now')) NOT NULL;

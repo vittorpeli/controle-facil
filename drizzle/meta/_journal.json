@@ -36,6 +36,20 @@
       "when": 1778774733410,
       "tag": "0004_round_terrax",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1779122711270,
+      "tag": "0005_fantastic_tenebrous",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1779122807982,
+      "tag": "0006_first_mimic",
+      "breakpoints": true
     }
   ]
 }
