@@ -12,11 +12,11 @@ export const makeCopyBudgetUseCase = (budgetsRepository: BudgetsRepository) => {
     const previousMonth = month === 1 ? 12 : month - 1
     const previousMonthYear = month === 1 ? year - 1 : year
 
-    const previousBudgets = await budgetsRepository.findAllByMonthAndYear({
+    const previousBudgets = await budgetsRepository.findAllByUserIdAndDate(
       userId,
-      month: previousMonth,
-      year: previousMonthYear,
-    })
+      previousMonth,
+      previousMonthYear,
+    )
 
     for (const budget of previousBudgets) {
       const alreadyExists = await budgetsRepository.findByCategoryMonthAndYear({

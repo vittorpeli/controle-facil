@@ -36,11 +36,11 @@ describe('Copy Budget Use Case', () => {
       year: 2026,
     })
 
-    const budgets = await budgetsRepository.findAllByMonthAndYear({
-      userId: USER_ID,
-      month: 5,
-      year: 2026,
-    })
+    const budgets = await budgetsRepository.findAllByUserIdAndDate(
+      USER_ID,
+      5,
+      2026,
+    )
 
     expect(budgets).toHaveLength(2)
 
@@ -77,11 +77,11 @@ describe('Copy Budget Use Case', () => {
       year: 2026,
     })
 
-    const budgets = await budgetsRepository.findAllByMonthAndYear({
-      userId: USER_ID,
-      month: 5,
-      year: 2026,
-    })
+    const budgets = await budgetsRepository.findAllByUserIdAndDate(
+      USER_ID,
+      5,
+      2026,
+    )
 
     expect(budgets).toHaveLength(1)
 
@@ -106,11 +106,11 @@ describe('Copy Budget Use Case', () => {
       year: 2026,
     })
 
-    const budgets = await budgetsRepository.findAllByMonthAndYear({
-      userId: USER_ID,
-      month: 1,
-      year: 2026,
-    })
+    const budgets = await budgetsRepository.findAllByUserIdAndDate(
+      USER_ID,
+      1,
+      2026,
+    )
 
     expect(budgets).toHaveLength(1)
 

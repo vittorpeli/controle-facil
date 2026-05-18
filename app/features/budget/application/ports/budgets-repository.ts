@@ -16,11 +16,6 @@ export interface BudgetsRepository {
     month: number,
     year: number,
   ): Promise<Budget[]>
-  findAllByMonthAndYear(data: {
-    userId: UUID
-    month: number
-    year: number
-  }): Promise<Budget[]>
   update(budget: Budget): Promise<Budget>
   delete(id: UUID): Promise<void>
 }
