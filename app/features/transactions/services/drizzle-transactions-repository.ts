@@ -1,9 +1,36 @@
 import type { UUID } from 'node:crypto'
-import { and, eq, ne, sql } from 'drizzle-orm'
+import { and, desc, eq, gte, inArray, lt, ne, sql } from 'drizzle-orm'
 import { db } from '~/lib/db'
 import { transactions } from '~/lib/db/schema'
-import type { TransactionsRepository } from '../application/ports/transactions-repository'
+import type {
+  TransactionFilters,
+  TransactionsRepository,
+} from '../application/ports/transactions-repository'
 import type { Transaction } from '../core/transaction'
+
+function toDomain(row: typeof transactions.$inferSelect): Transaction {
+  return {
+    id: row.id as UUID,
+    userId: row.userId as UUID,
+    accountId: row.accountId as UUID,
+    transferGroupId: (row.transferGroupId as UUID) ?? null,
+    type: row.type,
+    amount: row.amount,
+    date: new Date(row.date),
+    categoryId: (row.categoryId as UUID) ?? null,
+    description: row.description ?? null,
+    goalId: (row.goalId as UUID) ?? null,
+    status: row.status,
+    createdAt: new Date(row.createdAt), // text ISO → Date
+  }
+}
+
+function toDateString(date: Date): string {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return `${y}-${m}-${d}`
+}
 
 export class DrizzleTransactionsRepository implements TransactionsRepository {
   async getBalanceByAccountId(accountId: UUID): Promise<number> {
@@ -64,5 +91,96 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
     })
 
     return { outbound, inbound }
+  }
+
+  async findById(id: UUID): Promise<Transaction | null> {
+    const transaction = await db
+      .select()
+      .from(transactions)
+      .where(eq(transactions.id, id))
+      .get()
+    return transaction ? toDomain(transaction) : null
+  }
+
+  async findAllByUserId(
+    userId: UUID,
+    filters?: TransactionFilters,
+  ): Promise<Transaction[]> {
+    const conditions = [eq(transactions.userId, userId)]
+
+    if (filters?.accountId) {
+      conditions.push(eq(transactions.accountId, filters.accountId))
+    }
+
+    if (filters?.categoryId) {
+      conditions.push(eq(transactions.categoryId, filters.categoryId))
+    }
+
+    if (filters?.type) {
+      const types = Array.isArray(filters.type) ? filters.type : [filters.type]
+      conditions.push(inArray(transactions.type, types))
+    }
+
+    if (filters?.month !== undefined && filters.year !== undefined) {
+      conditions.push(
+        sql`strftime('%m', ${transactions.date}) = ${String(filters.month).padStart(2, '0')}`,
+      )
+      conditions.push(
+        sql`strftime('%Y', ${transactions.date}) = ${String(filters.year)}`,
+      )
+    } else if (filters?.year !== undefined) {
+      conditions.push(
+        sql`strftime('%Y', ${transactions.date}) = ${String(filters.year)}`,
+      )
+    }
+
+    const rows = await db
+      .select()
+      .from(transactions)
+      .where(and(...conditions))
+      .orderBy(desc(transactions.date))
+      .all()
+
+    return rows.map(toDomain)
+  }
+
+  async findAllByUserIdAndDate(
+    userId: UUID,
+    month: number,
+    year: number,
+  ): Promise<Transaction[]> {
+    const startDate = `${year}-${String(month).padStart(2, '0')}-01`
+    const endDate = `${year + (month === 12 ? 1 : 0)}-${String(
+      month === 12 ? 1 : month + 1,
+    ).padStart(2, '0')}-01`
+
+    const rows = await db
+      .select()
+      .from(transactions)
+      .where(
+        and(
+          eq(transactions.userId, userId),
+          gte(transactions.date, startDate),
+          lt(transactions.date, endDate),
+        ),
+      )
+      .all()
+    return rows.map(toDomain)
+  }
+
+  async update(transaction: Transaction): Promise<Transaction> {
+    await db.update(transactions).set({
+      accountId: transaction.accountId,
+      categoryId: transaction.categoryId,
+      amount: transaction.amount,
+      date: toDateString(transaction.date),
+      description: transaction.description,
+    })
+
+    return transaction
+  }
+
+  async delete(id: UUID): Promise<void> {
+    await db.delete(transactions).where(eq(transactions.id, id))
   }
 }
