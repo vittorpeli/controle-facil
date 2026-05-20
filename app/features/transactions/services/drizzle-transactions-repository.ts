@@ -1,7 +1,8 @@
 import type { UUID } from 'node:crypto'
 import { and, desc, eq, gte, inArray, lt, ne, sql } from 'drizzle-orm'
 import { db } from '~/lib/db'
-import { transactions } from '~/lib/db/schema'
+import { categories, transactions } from '~/lib/db/schema'
+import type { TransactionListItem } from '../application/dtos/transaction-list-item'
 import type {
   TransactionFilters,
   TransactionsRepository,
@@ -50,6 +51,38 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
       .get()
 
     return result?.balance ?? 0
+  }
+
+  async getBalancesByUserId(userId: UUID): Promise<Map<UUID, number>> {
+    const result = await db
+      .select({
+        accountId: transactions.accountId,
+        balance: sql<number>`
+        COALESCE(
+          SUM(
+            CASE WHEN ${transactions.type} IN ('income', 'transfer_in') THEN ${transactions.amount} ELSE 0 END
+          ),
+          0
+        )
+        -
+        COALESCE(
+          SUM(
+            CASE WHEN ${transactions.type} IN ('expense', 'transfer_out', 'contribution') THEN ${transactions.amount} ELSE 0 END
+          ),
+          0
+        )
+      `.as('balance'),
+      })
+      .from(transactions)
+      .where(
+        and(
+          eq(transactions.userId, userId),
+          ne(transactions.status, 'cancelled'),
+        ),
+      )
+      .groupBy(transactions.accountId)
+
+    return new Map(result.map((row) => [row.accountId as UUID, row.balance]))
   }
 
   async create(transaction: Transaction): Promise<Transaction> {
@@ -105,7 +138,7 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
   async findAllByUserId(
     userId: UUID,
     filters?: TransactionFilters,
-  ): Promise<Transaction[]> {
+  ): Promise<TransactionListItem[]> {
     const conditions = [eq(transactions.userId, userId)]
 
     if (filters?.accountId) {
@@ -135,13 +168,27 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
     }
 
     const rows = await db
-      .select()
+      .select({
+        transaction: transactions,
+        category: {
+          id: categories.id,
+          name: categories.name,
+        },
+      })
       .from(transactions)
+      .leftJoin(categories, eq(categories.id, transactions.categoryId))
       .where(and(...conditions))
       .orderBy(desc(transactions.date))
       .all()
 
-    return rows.map(toDomain)
+    return rows.map((row) => ({
+      ...toDomain(row.transaction),
+
+      category: {
+        id: (row.category?.id ?? row.transaction.categoryId) as UUID,
+        name: row.category?.name ?? 'Sem categoria',
+      },
+    }))
   }
 
   async findAllByUserIdAndDate(

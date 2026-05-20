@@ -18,18 +18,17 @@ export const makeListAccountsUseCase = (
   return async ({
     userId,
   }: ListAccountsRequest): Promise<ListAccountsResponse> => {
-    const allAccounts = await accountsRepository.findAllByUserId(userId)
+    const [allAccounts, balancesMap] = await Promise.all([
+      accountsRepository.findAllByUserId(userId),
+      transactionsRepository.getBalancesByUserId(userId),
+    ])
 
-    const activeAccounts = allAccounts.filter((account) => !account.isArchived)
-
-    const accounts = await Promise.all(
-      activeAccounts.map(async (account) => {
-        const balance = await transactionsRepository.getBalanceByAccountId(
-          account.id,
-        )
-        return { ...account, balance }
-      }),
-    )
+    const accounts = allAccounts
+      .filter((account) => !account.isArchived)
+      .map((account) => ({
+        ...account,
+        balance: balancesMap.get(account.id) ?? 0,
+      }))
 
     return { accounts }
   }

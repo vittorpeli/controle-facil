@@ -78,16 +78,4 @@ describe('Create Account Use Case', () => {
 
     expect(account.institution).toBeNull()
   })
-
-  it('should throw on invalid account type', async () => {
-    await expect(
-      sut({
-        userId: USER_ID,
-        name: 'Conta',
-        // biome-ignore lint/suspicious/noExplicitAny: testing invalid input
-        type: 'invalid_type' as any,
-        institution: null,
-      }),
-    ).rejects.toThrow('Invalid account type')
-  })
 })

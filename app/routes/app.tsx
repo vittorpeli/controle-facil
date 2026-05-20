@@ -45,7 +45,10 @@ export default function AppLayout() {
         userData={user}
         pages={navPages}
       />
-      <div className="wrapper flow my-xs">
+      <div
+        className="wrapper flow my-xs"
+        style={{ '--wrapper-max-width': '75vw' } as React.CSSProperties}
+      >
         <Outlet />
       </div>
     </div>

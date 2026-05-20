@@ -1,5 +1,6 @@
 import type { UUID } from 'node:crypto'
 import type { Transaction, TransactionType } from '../../core/transaction'
+import type { TransactionListItem } from '../dtos/transaction-list-item'
 
 export interface TransactionFilters {
   accountId?: UUID
@@ -11,6 +12,7 @@ export interface TransactionFilters {
 
 export interface TransactionsRepository {
   getBalanceByAccountId(accountId: UUID): Promise<number>
+  getBalancesByUserId(userId: UUID): Promise<Map<UUID, number>>
   create(transaction: Transaction): Promise<Transaction>
   createTransfer(params: {
     outbound: Transaction
@@ -19,7 +21,7 @@ export interface TransactionsRepository {
   findAllByUserId(
     userId: UUID,
     filters?: TransactionFilters,
-  ): Promise<Transaction[]>
+  ): Promise<TransactionListItem[]>
   findAllByUserIdAndDate(
     userId: UUID,
     month: number,

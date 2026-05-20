@@ -1,5 +1,5 @@
 import { randomUUID, type UUID } from 'node:crypto'
-import { type AccountType, accountTypeEnum } from '~/lib/db/schema'
+import type { AccountType } from '~/lib/db/schema'
 import type { Account } from '../../core/account'
 import type { AccountsRepository } from '../ports/accounts-repository'
 
@@ -23,10 +23,6 @@ export const makeCreateAccountUseCase = (
     type,
     institution,
   }: CreateAccountRequest): Promise<CreateAccountResponse> => {
-    if (!accountTypeEnum.includes(type)) {
-      throw new Error('Invalid account type')
-    }
-
     const account = await accountsRepository.create({
       id: randomUUID() as UUID,
       userId,

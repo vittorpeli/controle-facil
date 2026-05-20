@@ -1,9 +1,11 @@
 import type { UUID } from 'node:crypto'
+import type { TransactionListItem } from '~/features/transactions/application/dtos/transaction-list-item'
 import type {
   TransactionFilters,
   TransactionsRepository,
 } from '~/features/transactions/application/ports/transactions-repository'
 import type { Transaction } from '~/features/transactions/core/transaction'
+import type { InMemoryCategoriesRepository } from './in-memory-categories-repository'
 
 type FakeTransaction = {
   accountId: UUID
@@ -12,6 +14,8 @@ type FakeTransaction = {
 }
 
 export class InMemoryTransactionsRepository implements TransactionsRepository {
+  constructor(private categoriesRepository: InMemoryCategoriesRepository) {}
+
   public items: FakeTransaction[] = []
   public transactions: Transaction[] = []
 
@@ -34,6 +38,37 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
       .reduce((sum, t) => sum + t.amount, 0)
 
     return income - outflow
+  }
+
+  async getBalancesByUserId(userId: UUID): Promise<Map<UUID, number>> {
+    const balances = new Map<UUID, number>()
+
+    for (const transaction of this.transactions) {
+      if (transaction.userId !== userId) continue
+
+      const currentBalance = balances.get(transaction.accountId) ?? 0
+
+      const isIncome =
+        transaction.type === 'income' || transaction.type === 'transfer_in'
+      const isOutflow =
+        transaction.type === 'expense' ||
+        transaction.type === 'transfer_out' ||
+        transaction.type === 'contribution'
+
+      let nextBalance = currentBalance
+
+      if (isIncome) {
+        nextBalance += transaction.amount
+      }
+
+      if (isOutflow) {
+        nextBalance -= transaction.amount
+      }
+
+      balances.set(transaction.accountId, nextBalance)
+    }
+
+    return balances
   }
 
   async create(transaction: Transaction): Promise<Transaction> {
@@ -74,7 +109,7 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
   async findAllByUserId(
     userId: UUID,
     filters?: TransactionFilters,
-  ): Promise<Transaction[]> {
+  ): Promise<TransactionListItem[]> {
     let result = this.transactions.filter((t) => t.userId === userId)
 
     if (filters?.accountId) {
@@ -101,7 +136,27 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
       result = result.filter((t) => t.date.getFullYear() === filters.year)
     }
 
-    return result.sort((a, b) => b.date.getTime() - a.date.getTime())
+    const categoriesMap = new Map(
+      this.categoriesRepository.items.map((c) => [c.id, c]),
+    )
+
+    return result
+      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .map((tx) => {
+        const category = tx.categoryId
+          ? categoriesMap.get(tx.categoryId)
+          : undefined
+
+        return {
+          ...tx,
+
+          category: {
+            id:
+              tx.categoryId ?? ('00000000-0000-0000-0000-000000000000' as UUID),
+            name: category?.name ?? 'Sem categoria',
+          },
+        }
+      })
   }
 
   async findAllByUserIdAndDate(

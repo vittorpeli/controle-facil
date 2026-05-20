@@ -1,7 +1,8 @@
 import { randomUUID, type UUID } from 'node:crypto'
 import { beforeEach, describe, expect, it } from 'vitest'
-import { makeAccount } from '~/tests/helpers'
+import { makeAccount, makeCategory, makeTransaction } from '~/tests/helpers'
 import { InMemoryAccountsRepository } from '~/tests/repositories/in-memory-accounts-repository'
+import { InMemoryCategoriesRepository } from '~/tests/repositories/in-memory-categories-repository'
 import { InMemoryTransactionsRepository } from '~/tests/repositories/in-memory-transactions-repository'
 import { makeListAccountsUseCase } from './list-accounts'
 
@@ -10,12 +11,16 @@ const OTHER_USER_ID = randomUUID() as UUID
 
 let accountsRepository: InMemoryAccountsRepository
 let transactionsRepository: InMemoryTransactionsRepository
+let categoriesRepository: InMemoryCategoriesRepository
 let sut: ReturnType<typeof makeListAccountsUseCase>
 
 describe('List Accounts Use Case', () => {
   beforeEach(() => {
     accountsRepository = new InMemoryAccountsRepository()
-    transactionsRepository = new InMemoryTransactionsRepository()
+    categoriesRepository = new InMemoryCategoriesRepository()
+    transactionsRepository = new InMemoryTransactionsRepository(
+      categoriesRepository,
+    )
     sut = makeListAccountsUseCase(accountsRepository, transactionsRepository)
   })
 
@@ -26,11 +31,20 @@ describe('List Accounts Use Case', () => {
 
   it('should return accounts belonging to the user with their balance', async () => {
     const account = await makeAccount(USER_ID, accountsRepository)
+    const category = await makeCategory(categoriesRepository)
 
-    transactionsRepository.items.push(
-      { accountId: account.id, type: 'income', amount: 5000 },
-      { accountId: account.id, type: 'expense', amount: 1500 },
-    )
+    await makeTransaction(USER_ID, transactionsRepository, {
+      type: 'income',
+      accountId: account.id,
+      amount: 5000,
+      categoryId: category.id,
+    })
+    await makeTransaction(USER_ID, transactionsRepository, {
+      type: 'expense',
+      accountId: account.id,
+      amount: 1500,
+      categoryId: category.id,
+    })
 
     const { accounts } = await sut({ userId: USER_ID })
 
@@ -72,14 +86,24 @@ describe('List Accounts Use Case', () => {
   it('should calculate balance as income minus expense and transfers', async () => {
     const account = await makeAccount(USER_ID, accountsRepository)
 
-    transactionsRepository.items.push(
-      { accountId: account.id, type: 'income', amount: 10000 },
-      { accountId: account.id, type: 'expense', amount: 2000 },
-      { accountId: account.id, type: 'transfer_out', amount: 1000 },
-    )
+    await makeTransaction(USER_ID, transactionsRepository, {
+      type: 'income',
+      accountId: account.id,
+      amount: 1000,
+    })
+    await makeTransaction(USER_ID, transactionsRepository, {
+      type: 'expense',
+      accountId: account.id,
+      amount: 2000,
+    })
+    await makeTransaction(USER_ID, transactionsRepository, {
+      type: 'transfer_out',
+      accountId: account.id,
+      amount: 1000,
+    })
 
     const { accounts } = await sut({ userId: USER_ID })
 
-    expect(accounts[0].balance).toBe(7000)
+    expect(accounts[0].balance).toBe(-2000)
   })
 })

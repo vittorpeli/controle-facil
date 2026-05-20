@@ -1,6 +1,7 @@
 import type { UUID } from 'node:crypto'
-import type { Transaction, TransactionType } from '../../core/transaction'
+import type { TransactionType } from '../../core/transaction'
 import { computeTotals } from '../../services/compute-totals'
+import type { TransactionListItem } from '../dtos/transaction-list-item'
 import type { TransactionsRepository } from '../ports/transactions-repository'
 
 interface ListTransactionsRequest {
@@ -19,7 +20,7 @@ export interface PeriodTotals {
 }
 
 interface ListTransactionsResponse {
-  transactions: Transaction[]
+  transactions: TransactionListItem[]
   totals: PeriodTotals
 }
 

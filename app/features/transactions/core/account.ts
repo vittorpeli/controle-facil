@@ -1,4 +1,4 @@
-import type { UUID } from 'crypto'
+import type { UUID } from 'node:crypto'
 import type { AccountType } from '~/lib/db/schema'
 
 export type Account = {

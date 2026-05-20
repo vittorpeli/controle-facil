@@ -1,79 +1,80 @@
+import { randomUUID, type UUID } from 'node:crypto'
 import { db } from '.'
 import { categories } from './schema'
 
 type SeedCategory = {
-  id: string
+  id: UUID
   name: string
-  children?: { id: string; name: string }[]
+  children?: { name: string }[]
 }
 
 const DEFAULT_CATEGORIES: SeedCategory[] = [
   {
-    id: 'cat_moradia',
+    id: randomUUID(),
     name: 'Moradia',
     children: [
-      { id: 'cat_aluguel', name: 'Aluguel' },
-      { id: 'cat_condominio', name: 'Condomínio' },
-      { id: 'cat_agua_luz', name: 'Água e Luz' },
-      { id: 'cat_manutencao', name: 'Manutenção' },
+      { name: 'Aluguel' },
+      { name: 'Condomínio' },
+      { name: 'Água e Luz' },
+      { name: 'Manutenção' },
     ],
   },
   {
-    id: 'cat_alimentacao',
+    id: randomUUID(),
     name: 'Alimentação',
     children: [
-      { id: 'cat_mercado', name: 'Mercado' },
-      { id: 'cat_restaurante', name: 'Restaurante' },
-      { id: 'cat_delivery', name: 'Delivery' },
+      { name: 'Mercado' },
+      { name: 'Restaurante' },
+      { name: 'Delivery' },
     ],
   },
   {
-    id: 'cat_transporte',
+    id: randomUUID(),
     name: 'Transporte',
     children: [
-      { id: 'cat_combustivel', name: 'Combustível' },
-      { id: 'cat_onibus_metro', name: 'Ônibus / Metrô' },
-      { id: 'cat_uber', name: 'App de Corrida' },
-      { id: 'cat_manut_carro', name: 'Manutenção do Carro' },
+      { name: 'Combustível' },
+      { name: 'Ônibus / Metrô' },
+      { name: 'App de Corrida' },
+      { name: 'Manutenção do Carro' },
     ],
   },
   {
-    id: 'cat_saude',
+    id: randomUUID(),
     name: 'Saúde',
     children: [
-      { id: 'cat_plano_saude', name: 'Plano de Saúde' },
-      { id: 'cat_consulta', name: 'Consultas' },
-      { id: 'cat_farmacia', name: 'Farmácia' },
-      { id: 'cat_academia', name: 'Academia' },
+      { name: 'Plano de Saúde' },
+      { name: 'Consultas' },
+      { name: 'Farmácia' },
+      { name: 'Academia' },
     ],
   },
   {
-    id: 'cat_lazer',
+    id: randomUUID(),
     name: 'Lazer',
     children: [
-      { id: 'cat_streaming', name: 'Streaming' },
-      { id: 'cat_viagem', name: 'Viagem' },
-      { id: 'cat_jogos', name: 'Jogos' },
-      { id: 'cat_eventos', name: 'Eventos e Shows' },
+      { name: 'Streaming' },
+      { name: 'Viagem' },
+      { name: 'Jogos' },
+      { name: 'Eventos e Shows' },
     ],
   },
   {
-    id: 'cat_educacao',
+    id: randomUUID(),
     name: 'Educação',
     children: [
-      { id: 'cat_cursos', name: 'Cursos' },
-      { id: 'cat_livros', name: 'Livros' },
-      { id: 'cat_escola', name: 'Escola / Faculdade' },
+      { name: 'Cursos' },
+      { name: 'Livros' },
+      { name: 'Escola / Faculdade' },
     ],
   },
   {
-    id: 'cat_receita',
+    id: randomUUID(),
     name: 'Receita',
     children: [
-      { id: 'cat_salario', name: 'Salário' },
-      { id: 'cat_freelance', name: 'Freelance' },
-      { id: 'cat_investimento', name: 'Rendimento de Investimento' },
-      { id: 'cat_outros_rec', name: 'Outros' },
+      { name: 'Salário' },
+      { name: 'Freelance' },
+      { name: 'Rendimento de Investimento' },
+      { name: 'Outros' },
     ],
   },
 ]
@@ -100,7 +101,7 @@ export async function seedDefaultCategories() {
       await db
         .insert(categories)
         .values({
-          id: child.id,
+          id: randomUUID(),
           userId: null,
           name: child.name,
           parentId: cat.id,

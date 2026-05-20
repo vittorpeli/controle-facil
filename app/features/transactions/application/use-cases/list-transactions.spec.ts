@@ -2,17 +2,22 @@ import { randomUUID, type UUID } from 'node:crypto'
 import { beforeEach, describe, expect, it } from 'vitest'
 import { makeAccount, makeTransaction } from '~/tests/helpers'
 import { InMemoryAccountsRepository } from '~/tests/repositories/in-memory-accounts-repository'
+import { InMemoryCategoriesRepository } from '~/tests/repositories/in-memory-categories-repository'
 import { InMemoryTransactionsRepository } from '~/tests/repositories/in-memory-transactions-repository'
 import { makeListTransactionsUseCase } from './list-transactions'
 
 const USER_ID = randomUUID() as UUID
 
 let transactionsRepository: InMemoryTransactionsRepository
+let categoriesRepository: InMemoryCategoriesRepository
 let sut: ReturnType<typeof makeListTransactionsUseCase>
 
 describe('List Transactions Use Case', () => {
   beforeEach(() => {
-    transactionsRepository = new InMemoryTransactionsRepository()
+    categoriesRepository = new InMemoryCategoriesRepository()
+    transactionsRepository = new InMemoryTransactionsRepository(
+      categoriesRepository,
+    )
     sut = makeListTransactionsUseCase(transactionsRepository)
   })
 

@@ -153,6 +153,59 @@
     width: 1.1em;
 }
 
+/* Select */
+::picker(select) {
+    appearance: base-select;
+}
+
+.select {
+    --transition-normal: 250ms;
+    --padding-block: 0.65em;
+    --form-control-height: round(calc(2 * var(--padding-block) + 1em * 1.25), 1px);
+
+    inline-size: 100%;
+    padding-inline: 0.75em;
+    padding-block: var(--padding-block);
+    border: var(--stroke-width) solid var(--color-primary);
+    border-radius: var(--radius-m);
+    background-color: var(--color-light);
+    height: var(--form-control-height);
+    box-shadow: var(--shadow-xs);
+
+    transition-property: border-color, box-shadow;
+    transition-timing-function: var(--ease-out);
+    transition-duration: var(--transition-normal);
+
+    font-size: var(--text-step--1);
+}
+
+.select::picker-icon {
+    margin-right: var(--spacing-xl);
+}
+
+.select:focus-visible {
+    box-shadow: 0 0 0 2px color-mix(in oklab, var(--color-primary) 75%, transparent);
+    outline: none;
+    border-color: var(--color-secondary);
+}
+
+.select:hover, .select:active {
+    filter: brightness(110%);
+}
+
+.option {
+    font-size: var(--text-step--1);
+}
+
+.option::picker(checkmark) {
+    display: none;
+}
+
+.option:hover, .option:hover {
+    background-color: var(--color-primary);
+    color: var(--color-light);
+}
+
 /* Fieldset */
 /* InputGroup - The wrapper that provides visual appearance */
 .fieldset {
