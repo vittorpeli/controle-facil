@@ -116,9 +116,7 @@ export const CreateTransactionModal = ({
 
       <div className="flex justify-end">
         <Button type="submit" disabled={fetcher.state !== 'idle'}>
-          {fetcher.state === 'loading'
-            ? 'Adicionando...'
-            : 'Adicionar Transação'}
+          {fetcher.state !== 'idle' ? 'Adicionando...' : 'Adicionar Transação'}
         </Button>
       </div>
     </fetcher.Form>

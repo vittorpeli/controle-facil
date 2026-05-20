@@ -37,8 +37,9 @@ export function ArchiveConfirmationAlert({
             <Button
               type="submit"
               className="bg-error hover:bg-red-700 transition"
+              disabled={fetcher.state !== 'idle'}
             >
-              Sim
+              {fetcher.state !== 'idle' ? 'Criando Conta...' : 'Sim'}
             </Button>
           </fetcher.Form>
         </div>

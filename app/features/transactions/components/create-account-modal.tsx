@@ -86,7 +86,7 @@ export const CreateAccountModal = (): React.ReactNode => {
 
       <div className="flex justify-end">
         <Button type="submit" disabled={fetcher.state !== 'idle'}>
-          Criar Conta
+          {fetcher.state !== 'idle' ? 'Criando Conta...' : 'Criar Conta'}
         </Button>
       </div>
     </fetcher.Form>
