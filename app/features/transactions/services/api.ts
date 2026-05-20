@@ -8,6 +8,7 @@ import { DrizzleTransactionsRepository } from '~/features/transactions/services/
 import { archiveAccountAction } from './actions/archive-account'
 import { createAccountAction } from './actions/create-account'
 import { createTransactionAction } from './actions/create-transaction'
+import { createTransferAction } from './actions/create-transfer'
 import { editAccountAction } from './actions/edit-account'
 
 type LoaderArgs = {
@@ -61,6 +62,9 @@ export async function action({ request }: ActionArgs) {
 
     case 'create-transaction':
       return createTransactionAction(formData, user.id)
+
+    case 'create-transfer':
+      return createTransferAction(formData, user.id)
 
     default:
       throw new Error('invalid intent')

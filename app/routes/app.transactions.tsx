@@ -7,6 +7,7 @@ import { CreateAccountModal } from '~/features/transactions/components/create-ac
 import { CreateTransactionModal } from '~/features/transactions/components/create-transaction-modal'
 import { EditAccountModal } from '~/features/transactions/components/edit-account-modal'
 import { BaseModal } from '~/features/transactions/components/modal'
+import { TransferForm } from '~/features/transactions/components/transfer-form'
 import { action, loader } from '~/features/transactions/services/api'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader } from '~/ui/card'
@@ -36,6 +37,7 @@ export default function Transactions() {
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false)
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isTransferModalOpen, setIsTrasnferModalOpen] = useState(false)
 
   const { accounts, transactions, categories } = useLoaderData<typeof loader>()
 
@@ -127,6 +129,23 @@ export default function Transactions() {
           )}
         </div>
       </div>
+
+      {accounts.length > 1 ? (
+        <div>
+          <Button
+            onClick={() => setIsTrasnferModalOpen(true)}
+            data-button-variant="link"
+          >
+            + Registrar transferência entre contas
+          </Button>
+          <BaseModal
+            isOpen={isTransferModalOpen}
+            onClose={() => setIsTrasnferModalOpen(false)}
+          >
+            <TransferForm accounts={accounts} />
+          </BaseModal>
+        </div>
+      ) : null}
 
       <div className="flow flow-space-m mt-s-l">
         <Headline title="Transações">
