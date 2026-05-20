@@ -32,6 +32,12 @@
     transform: scale(99%);
 }
 
+.button:disabled {
+    --button-bg: var(--color-gray-400);
+    --button-text: var(--color-dark);
+    cursor: not-allowed;
+}
+
 .button[data-button-variant="secondary"] {
     --button-bg: var(--color-secondary);
     --button-text: var(--color-dark-glare);

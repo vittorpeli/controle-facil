@@ -22,7 +22,7 @@ export const BaseModal = ({ isOpen, onClose, children }: BaseModalProps) => {
     <dialog
       ref={dialogRef}
       onCancel={onClose}
-      className="p-m bg-slate-50 rounded-xl border-0 focus-within:border-0 focus:border-0"
+      className="p-m bg-slate-50 backdrop:bg-primary/40 rounded-xl border-0 focus-within:border-0 focus:border-0"
     >
       {children}
     </dialog>

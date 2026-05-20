@@ -18,6 +18,8 @@ export async function editAccountAction(formData: FormData, userId: UUID) {
     accountId: submission.value.accountId as UUID,
     userId,
     name: submission.value.name,
+    type: submission.value.type,
+    institution: submission.value.institution || null,
   })
 
   return redirect('/app/transactions')

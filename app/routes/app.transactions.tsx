@@ -2,8 +2,10 @@ import { Archive, Lightbulb, Plus, SquarePen } from 'lucide-react'
 import { useState } from 'react'
 import { useLoaderData } from 'react-router'
 import { dateFormatter } from '~/features/shared/date-formatter'
+import { ArchiveConfirmationAlert } from '~/features/transactions/components/archive-confirmation-alert'
 import { CreateAccountModal } from '~/features/transactions/components/create-account-modal'
 import { CreateTransactionModal } from '~/features/transactions/components/create-transaction-modal'
+import { EditAccountModal } from '~/features/transactions/components/edit-account-modal'
 import { BaseModal } from '~/features/transactions/components/modal'
 import { action, loader } from '~/features/transactions/services/api'
 import { Button } from '~/ui/Button'
@@ -30,9 +32,12 @@ export function meta() {
 export { action, loader }
 
 export default function Transactions() {
-  const { accounts, transactions, categories } = useLoaderData<typeof loader>()
   const [isAccountModalOpen, setIsAccountModalOpen] = useState(false)
   const [isTransactionModalOpen, setIsTransactionModalOpen] = useState(false)
+  const [isAlertOpen, setIsAlertOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+
+  const { accounts, transactions, categories } = useLoaderData<typeof loader>()
 
   return (
     <div className="flow">
@@ -75,12 +80,27 @@ export default function Transactions() {
               <CardHeader>
                 <Headline title={account.name}>
                   <div className="flex flex-row items-center gap-2xs mr-s">
-                    <Button data-button-variant="link">
+                    <Button
+                      data-button-variant="link"
+                      onClick={() => setIsAlertOpen(true)}
+                    >
                       <Archive />
                     </Button>
-                    <Button data-button-variant="link">
+                    <Button
+                      data-button-variant="link"
+                      onClick={() => setIsEditModalOpen(true)}
+                    >
                       <SquarePen />
                     </Button>
+                    <BaseModal
+                      isOpen={isEditModalOpen}
+                      onClose={() => setIsEditModalOpen(false)}
+                    >
+                      <EditAccountModal
+                        account={account}
+                        onCancel={() => setIsEditModalOpen(false)}
+                      />
+                    </BaseModal>
                   </div>
                 </Headline>
               </CardHeader>
@@ -93,6 +113,13 @@ export default function Transactions() {
                   })}
                 </span>
               </CardContent>
+
+              <ArchiveConfirmationAlert
+                message="Você tem certeza que quer arquivar essa conta?"
+                isOpen={isAlertOpen}
+                onCancel={() => setIsAlertOpen(false)}
+                account={account}
+              />
             </Card>
           ))}
           {accounts.length === 0 && (
