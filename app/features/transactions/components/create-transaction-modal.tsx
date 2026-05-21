@@ -4,6 +4,7 @@ import { useFetcher } from 'react-router'
 import type { Category } from '~/features/categories/core/category'
 import { Button } from '~/ui/Button'
 import { Input, Label, Option, Select } from '~/ui/form'
+import { CurrencyInput } from '~/ui/form/currency-input'
 import type { Account } from '../core/account'
 import { createTransactionSchema } from '../services/schemas/create-transaction-schema'
 
@@ -50,8 +51,12 @@ export const CreateTransactionModal = ({
 
       <div>
         <Label htmlFor={fields.amount.id}>Valor*:</Label>
-        <Input id={fields.amount.id} name={fields.amount.name} type="number" />
-        <p className="text-error text-step--2">{fields.amount.errors}</p>
+        <CurrencyInput
+          id={fields.amount.id}
+          name={fields.amount.name}
+          defaultValue={fields.amount.initialValue}
+          error={fields.amount.errors}
+        />
       </div>
 
       <div>

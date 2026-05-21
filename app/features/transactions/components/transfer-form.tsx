@@ -3,6 +3,7 @@ import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
 import { useFetcher } from 'react-router'
 import { Button } from '~/ui/Button'
 import { Input, Label, Option, Select } from '~/ui/form'
+import { CurrencyInput } from '~/ui/form/currency-input'
 import type { Account } from '../core/account'
 import { createTransferSchema } from '../services/schemas/create-transfer-schema'
 
@@ -65,8 +66,12 @@ export const TransferForm = ({
 
       <div>
         <Label htmlFor={fields.amount.id}>Valor*:</Label>
-        <Input id={fields.amount.id} name={fields.amount.name} type="number" />
-        <p className="text-error text-step--2">{fields.amount.errors}</p>
+        <CurrencyInput
+          id={fields.amount.id}
+          name={fields.amount.name}
+          defaultValue={fields.amount.initialValue}
+          error={fields.amount.errors}
+        />
       </div>
 
       <div>
