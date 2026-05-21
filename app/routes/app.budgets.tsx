@@ -1,10 +1,11 @@
-import { ArrowRight, Copy, Plus } from 'lucide-react'
+import { ArrowRight, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLoaderData } from 'react-router'
 import { requireAuth } from '~/features/auth/services/require-auth'
 import { makeListBudgetsUseCase } from '~/features/budget/application/use-cases/list-budgets'
 import { action } from '~/features/budget/http/api'
 import { BudgetForm } from '~/features/budget/presentation/budget-form'
+import { CopyBudgetLoader } from '~/features/budget/presentation/copy-budget-loader'
 import { DrizzleBudgetsRepository } from '~/features/budget/services/drizzle-budgets-repository'
 import { makeListCategoriesUseCase } from '~/features/categories/application/use-cases/list-categories'
 import { DrizzleCategoriesRepository } from '~/features/categories/services/drizzle-categories-repository'
@@ -99,12 +100,7 @@ export default function Budgets() {
           ))}
         </div>
 
-        <div className="mt-s-m">
-          <Button data-button-variant="link">
-            <Copy />
-            Copiar Orçamentos do Mês Anterior
-          </Button>
-        </div>
+        <CopyBudgetLoader />
       </div>
     </div>
   )

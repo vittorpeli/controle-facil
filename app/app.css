@@ -34,6 +34,7 @@
 @import "./css/blocks/table.css";
 @import "./css/blocks/transaction.css" layer(components);
 @import "./css/blocks/auth-layout.css";
+@import "./css/blocks/loader.css";
 
 /* Utilities */
 @import "./css/utilities/cube-utils.css";
