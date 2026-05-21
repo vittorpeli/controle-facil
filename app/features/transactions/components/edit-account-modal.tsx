@@ -54,7 +54,7 @@ export const EditAccountModal = ({
     >
       <Input type="hidden" name="intent" value="create-account" />
 
-      <Input type="hidden" name="intent" value={account.id} />
+      <Input type="hidden" name={fields.accountId.name} value={account.id} />
 
       <div>
         <Label htmlFor={fields.name.id}>Nome*</Label>

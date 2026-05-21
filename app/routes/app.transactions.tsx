@@ -6,13 +6,13 @@ import { ArchiveConfirmationAlert } from '~/features/transactions/components/arc
 import { CreateAccountModal } from '~/features/transactions/components/create-account-modal'
 import { CreateTransactionModal } from '~/features/transactions/components/create-transaction-modal'
 import { EditAccountModal } from '~/features/transactions/components/edit-account-modal'
-import { BaseModal } from '~/features/transactions/components/modal'
 import { TransferForm } from '~/features/transactions/components/transfer-form'
 import { action, loader } from '~/features/transactions/services/api'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader } from '~/ui/card'
 import { Header } from '~/ui/Header'
 import { Headline } from '~/ui/headline'
+import { BaseModal } from '~/ui/modal'
 import { Quote } from '~/ui/Quote'
 import {
   Table,

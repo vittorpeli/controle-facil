@@ -21,7 +21,7 @@ export class DrizzleBudgetsRepository implements BudgetsRepository {
   async create(budget: Budget): Promise<Budget> {
     await db.insert(budgets).values({
       id: budget.id,
-      userId: budget.id,
+      userId: budget.userId,
       categoryId: budget.categoryId,
       month: budget.month,
       year: budget.year,

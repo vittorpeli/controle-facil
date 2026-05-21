@@ -26,9 +26,9 @@ export function useAuthenticatedUser(): User {
 const navPages = [
   { label: 'Dashboard', to: '/app', icon: <House /> },
   { label: 'Transações', to: '/app/transactions', icon: <ArrowLeftRight /> },
-  { label: 'Orçamentos', to: '/app/orçamentos', icon: <WalletCards /> },
-  { label: 'Metas', to: '/app/metas', icon: <Goal /> },
-  { label: 'Relatórios', to: '/app/relatorios', icon: <Newspaper /> },
+  { label: 'Orçamentos', to: '/app/budgets', icon: <WalletCards /> },
+  { label: 'Metas', to: '/app/goals', icon: <Goal /> },
+  { label: 'Relatórios', to: '/app/report', icon: <Newspaper /> },
 ]
 
 export default function AppLayout() {
