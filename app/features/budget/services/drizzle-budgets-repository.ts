@@ -97,7 +97,7 @@ export class DrizzleBudgetsRepository implements BudgetsRepository {
   async update(budget: Budget): Promise<Budget> {
     await db.update(budgets).set({
       limitAmount: budget.limitAmount,
-    })
+    }).where(eq(budgets.id, budget.id))
     return budget
   }
 

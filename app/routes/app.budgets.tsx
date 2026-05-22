@@ -1,9 +1,10 @@
 import { ArrowRight, Plus, SquarePen, Trash2 } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLoaderData } from 'react-router'
+import type { BudgetProgress } from '~/features/budget/core/budget'
 import { action, loader } from '~/features/budget/http/api'
 import { BudgetForm } from '~/features/budget/presentation/budget-form'
-import { BudgetProgress } from '~/features/budget/presentation/budget-progress'
+import { BudgetProgress as Progress } from '~/features/budget/presentation/budget-progress'
 import { CopyBudgetLoader } from '~/features/budget/presentation/copy-budget-loader'
 import { DeleteBudgetAlert } from '~/features/budget/presentation/delete-alert'
 import { EditBudgetForm } from '~/features/budget/presentation/edit-budget-form'
@@ -28,6 +29,11 @@ export default function Budgets() {
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false)
   const [isDelete, setIsDelete] = useState(false)
   const [editBudget, setEditBudget] = useState(false)
+
+  const [selectedBudget, setSelectedBudget] = useState<BudgetProgress | null>(
+    null,
+  )
+  const [selectedBudgetName, setSelectedBudgetName] = useState<string>('')
 
   return (
     <div className="mt-m flow flow-space-m">
@@ -55,7 +61,7 @@ export default function Budgets() {
       <div>
         <Headline title="Categorias - Mês Atual">
           <Link className="button" data-button-variant="link" to="/categories">
-            Ver tudo
+            Ver categorias
             <ArrowRight />
           </Link>
         </Headline>
@@ -71,7 +77,13 @@ export default function Budgets() {
                 <div className="flex flex-row items-center gap-2xs">
                   <Button
                     data-button-variant="link"
-                    onClick={() => setIsDelete(true)}
+                    onClick={() => {
+                      setSelectedBudget(
+                        budgets.find((b) => b.categoryId === c.id) ?? null,
+                      )
+                      setSelectedBudgetName(c.name)
+                      setIsDelete(true)
+                    }}
                   >
                     <Trash2 />
                   </Button>
@@ -79,23 +91,21 @@ export default function Budgets() {
                     message="Você tem certeza que quer excluir esse orçamento?"
                     isOpen={isDelete}
                     onCancel={() => setIsDelete(false)}
-                    budget={budgets.find((b) => b.categoryId === c.id)}
+                    budget={selectedBudget}
                   />
 
                   <Button
                     data-button-variant="link"
-                    onClick={() => setEditBudget(true)}
+                    onClick={() => {
+                      setSelectedBudget(
+                        budgets.find((b) => b.categoryId === c.id) ?? null,
+                      )
+                      setSelectedBudgetName(c.name)
+                      setEditBudget(true)
+                    }}
                   >
                     <SquarePen />
                   </Button>
-                  <BaseModal
-                    isOpen={editBudget}
-                    onClose={() => setEditBudget(true)}
-                  >
-                    <EditBudgetForm
-                      budget={budgets.find((b) => b.categoryId === c.id)}
-                    />
-                  </BaseModal>
                 </div>
                 <span className="font-mono font-medium mb-s">
                   Limite:{' '}
@@ -106,7 +116,7 @@ export default function Budgets() {
                     Valor gasto:{' '}
                     {`${budgets.find((b) => b.categoryId === c.id)?.spentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ?? 'Não definido'}`}
                   </span>
-                  <BudgetProgress
+                  <Progress
                     progress={
                       budgets.find((b) => b.categoryId === c.id)
                         ?.progressPercentage ?? 0
@@ -123,6 +133,14 @@ export default function Budgets() {
         </div>
 
         <CopyBudgetLoader />
+
+        <BaseModal isOpen={editBudget} onClose={() => setEditBudget(false)}>
+          <EditBudgetForm
+            budget={selectedBudget}
+            onCancel={() => setEditBudget(false)}
+            name={selectedBudgetName}
+          />
+        </BaseModal>
       </div>
     </div>
   )

@@ -7,7 +7,15 @@ import { CurrencyInput } from '~/ui/form/currency-input'
 import type { Budget } from '../core/budget'
 import { editBudgetSchema } from '../http/schemas/edit-budget-schema'
 
-export const EditBudgetForm = ({ budget }: { budget?: Budget }) => {
+export const EditBudgetForm = ({
+  budget,
+  onCancel,
+  name,
+}: {
+  budget?: Budget | null
+  onCancel: () => void
+  name: string
+}) => {
   const fetcher = useFetcher()
 
   const [form, fields] = useForm({
@@ -21,6 +29,8 @@ export const EditBudgetForm = ({ budget }: { budget?: Budget }) => {
     shouldValidate: 'onBlur',
   })
 
+  if (!budget) return null
+
   return (
     <fetcher.Form
       className="flow"
@@ -29,7 +39,9 @@ export const EditBudgetForm = ({ budget }: { budget?: Budget }) => {
       onSubmit={form.onSubmit}
     >
       <input type="hidden" name="intent" value="edit-budget" />
-      <input type="hidden" name={fields.budgetId.name} value={budget?.id} />
+      <input type="hidden" name={fields.budgetId.name} value={budget.id} />
+
+      <h4>{name}</h4>
 
       <div>
         <Label htmlFor={fields.limitAmount.id}>Limite:</Label>
@@ -41,7 +53,10 @@ export const EditBudgetForm = ({ budget }: { budget?: Budget }) => {
         />
       </div>
 
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-2xs">
+        <Button type="button" onClick={onCancel}>
+          Cancelar
+        </Button>
         <Button
           type="submit"
           data-button-variant="secondary"
