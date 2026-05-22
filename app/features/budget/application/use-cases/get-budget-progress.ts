@@ -1,6 +1,7 @@
 import type { UUID } from 'node:crypto'
 import type { TransactionsRepository } from '~/features/transactions/application/ports/transactions-repository'
 import type { BudgetProgress } from '../../core/budget'
+import { getBudgetProgressStatus } from '../../services/get-budget-progress'
 import type { BudgetsRepository } from '../ports/budgets-repository'
 
 interface GetBudgetRequest {
@@ -11,14 +12,6 @@ interface GetBudgetRequest {
 
 interface GetBudgetResponse {
   budgetProgresses: BudgetProgress[]
-}
-
-function getBudgetProgressStatus(
-  progress: number,
-): 'safe' | 'warning' | 'danger' {
-  if (progress < 80) return 'safe'
-  if (progress <= 100) return 'warning'
-  return 'danger'
 }
 
 export const makeGetBudgetProgressUseCase = (

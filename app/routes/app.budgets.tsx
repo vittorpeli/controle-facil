@@ -1,20 +1,15 @@
 import { Archive, ArrowRight, Plus, SquarePen } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLoaderData } from 'react-router'
-import { requireAuth } from '~/features/auth/services/require-auth'
-import { makeListBudgetsUseCase } from '~/features/budget/application/use-cases/list-budgets'
-import { action } from '~/features/budget/http/api'
+import { action, loader } from '~/features/budget/http/api'
 import { BudgetForm } from '~/features/budget/presentation/budget-form'
+import { BudgetProgress } from '~/features/budget/presentation/budget-progress'
 import { CopyBudgetLoader } from '~/features/budget/presentation/copy-budget-loader'
-import { DrizzleBudgetsRepository } from '~/features/budget/services/drizzle-budgets-repository'
-import { makeListCategoriesUseCase } from '~/features/categories/application/use-cases/list-categories'
-import { DrizzleCategoriesRepository } from '~/features/categories/services/drizzle-categories-repository'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/ui/card'
 import { Header } from '~/ui/Header'
 import { Headline } from '~/ui/headline'
 import { BaseModal } from '~/ui/modal'
-import type { Route } from './+types/app.budgets'
 
 export function meta() {
   return [
@@ -23,38 +18,7 @@ export function meta() {
   ]
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const user = await requireAuth(request)
-  const thisMonth = new Date().getMonth()
-  const thisYear = new Date().getFullYear()
-
-  const budgetsRepository = new DrizzleBudgetsRepository()
-  const categoriesRepository = new DrizzleCategoriesRepository()
-
-  const listCategories = makeListCategoriesUseCase(categoriesRepository)
-  const listBudgets = makeListBudgetsUseCase(budgetsRepository)
-
-  const [{ categories }, { budgets }] = await Promise.all([
-    listCategories({ userId: user.id, includeArchived: false }),
-    listBudgets({
-      userId: user.id,
-      month: thisMonth,
-      year: thisYear,
-    }),
-  ])
-
-  const incomeCategory = categories.find(
-    (c) => c.name.toLowerCase() === 'receita',
-  )
-
-  const expenseCategories = categories.filter(
-    (c) => c.id !== incomeCategory?.id && c.parentId !== incomeCategory?.id,
-  )
-
-  return { expenseCategories, budgets }
-}
-
-export { action }
+export { action, loader }
 
 export default function Budgets() {
   const { expenseCategories, budgets } = useLoaderData<typeof loader>()
@@ -107,10 +71,26 @@ export default function Budgets() {
                     <SquarePen />
                   </Button>
                 </div>
-                <span className="font-mono font-medium">
+                <span className="font-mono font-medium mb-s">
                   Limite:{' '}
                   {`${budgets.find((b) => b.categoryId === c.id)?.limitAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ?? 'Não definido'}`}
                 </span>
+                <div>
+                  <span className="font-mono font-medium text-step--1">
+                    Valor gasto:{' '}
+                    {`${budgets.find((b) => b.categoryId === c.id)?.spentAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ?? 'Não definido'}`}
+                  </span>
+                  <BudgetProgress
+                    progress={
+                      budgets.find((b) => b.categoryId === c.id)
+                        ?.progressPercentage ?? 0
+                    }
+                    status={
+                      budgets.find((b) => b.categoryId === c.id)?.status ??
+                      'safe'
+                    }
+                  />
+                </div>
               </CardContent>
             </Card>
           ))}
