@@ -63,10 +63,13 @@ export class DrizzleOccurrencesRepository implements OccurrencesRepository {
   }
 
   async update(occurrence: Occurrence): Promise<Occurrence> {
-    await db.update(recurrenceOccurrences).set({
-      status: occurrence.status,
-      transactionId: occurrence.transactionId,
-    }).where(eq(recurrenceOccurrences.id, occurrence.id))
+    await db
+      .update(recurrenceOccurrences)
+      .set({
+        status: occurrence.status,
+        transactionId: occurrence.transactionId,
+      })
+      .where(eq(recurrenceOccurrences.id, occurrence.id))
     return occurrence
   }
 }

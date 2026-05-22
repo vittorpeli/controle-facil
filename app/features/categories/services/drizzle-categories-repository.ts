@@ -86,10 +86,13 @@ export class DrizzleCategoriesRepository implements CategoriesRepository {
   }
 
   async update(category: Category): Promise<Category> {
-    await db.update(categories).set({
-      name: category.name,
-      isArchived: category.isArchived,
-    }).where(eq(categories.id, category.id))
+    await db
+      .update(categories)
+      .set({
+        name: category.name,
+        isArchived: category.isArchived,
+      })
+      .where(eq(categories.id, category.id))
     return category
   }
 }

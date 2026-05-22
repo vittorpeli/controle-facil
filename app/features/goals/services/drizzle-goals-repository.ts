@@ -61,12 +61,15 @@ export class DrizzleGoalsRepository implements GoalsRepository {
   }
 
   async update(goal: Goal): Promise<Goal> {
-    await db.update(goals).set({
-      name: goal.name,
-      targetAmount: goal.targetAmount,
-      deadline: toDateString(goal.deadline),
-      description: goal.description,
-    }).where(eq(goals.id, goal.id))
+    await db
+      .update(goals)
+      .set({
+        name: goal.name,
+        targetAmount: goal.targetAmount,
+        deadline: toDateString(goal.deadline),
+        description: goal.description,
+      })
+      .where(eq(goals.id, goal.id))
 
     return goal
   }

@@ -216,13 +216,16 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
   }
 
   async update(transaction: Transaction): Promise<Transaction> {
-    await db.update(transactions).set({
-      accountId: transaction.accountId,
-      categoryId: transaction.categoryId,
-      amount: transaction.amount,
-      date: toDateString(transaction.date),
-      description: transaction.description,
-    }).where(eq(transactions.id, transaction.id))
+    await db
+      .update(transactions)
+      .set({
+        accountId: transaction.accountId,
+        categoryId: transaction.categoryId,
+        amount: transaction.amount,
+        date: toDateString(transaction.date),
+        description: transaction.description,
+      })
+      .where(eq(transactions.id, transaction.id))
 
     return transaction
   }
