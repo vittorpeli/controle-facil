@@ -89,7 +89,7 @@ export class DrizzleCategoriesRepository implements CategoriesRepository {
     await db.update(categories).set({
       name: category.name,
       isArchived: category.isArchived,
-    })
+    }).where(eq(categories.id, category.id))
     return category
   }
 }

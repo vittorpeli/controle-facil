@@ -222,7 +222,7 @@ export class DrizzleTransactionsRepository implements TransactionsRepository {
       amount: transaction.amount,
       date: toDateString(transaction.date),
       description: transaction.description,
-    })
+    }).where(eq(transactions.id, transaction.id))
 
     return transaction
   }

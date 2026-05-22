@@ -66,7 +66,7 @@ export class DrizzleOccurrencesRepository implements OccurrencesRepository {
     await db.update(recurrenceOccurrences).set({
       status: occurrence.status,
       transactionId: occurrence.transactionId,
-    })
+    }).where(eq(recurrenceOccurrences.id, occurrence.id))
     return occurrence
   }
 }

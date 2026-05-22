@@ -66,7 +66,7 @@ export class DrizzleGoalsRepository implements GoalsRepository {
       targetAmount: goal.targetAmount,
       deadline: toDateString(goal.deadline),
       description: goal.description,
-    })
+    }).where(eq(goals.id, goal.id))
 
     return goal
   }
