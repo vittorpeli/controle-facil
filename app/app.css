@@ -19,6 +19,7 @@
 @import "./css/compositions/sidebar.css" layer(components);
 @import "./css/compositions/switcher.css" layer(components);
 @import "./css/compositions/wrapper.css" layer(components);
+@import "./css/compositions/reel.css" layer(components);
 
 /* Blocks/Components */
 @import "./css/blocks/button.css" layer(components);

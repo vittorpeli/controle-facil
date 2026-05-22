@@ -1,4 +1,4 @@
-import { ArrowRight, Plus } from 'lucide-react'
+import { Archive, ArrowRight, Plus, SquarePen } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useLoaderData } from 'react-router'
 import { requireAuth } from '~/features/auth/services/require-auth'
@@ -43,13 +43,21 @@ export async function loader({ request }: Route.LoaderArgs) {
     }),
   ])
 
-  return { categories, budgets }
+  const incomeCategory = categories.find(
+    (c) => c.name.toLowerCase() === 'receita',
+  )
+
+  const expenseCategories = categories.filter(
+    (c) => c.id !== incomeCategory?.id && c.parentId !== incomeCategory?.id,
+  )
+
+  return { expenseCategories, budgets }
 }
 
 export { action }
 
 export default function Budgets() {
-  const { categories, budgets } = useLoaderData<typeof loader>()
+  const { expenseCategories, budgets } = useLoaderData<typeof loader>()
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState(false)
 
   return (
@@ -71,27 +79,35 @@ export default function Budgets() {
           isOpen={isBudgetModalOpen}
           onClose={() => setIsBudgetModalOpen(false)}
         >
-          <BudgetForm categories={categories} />
+          <BudgetForm categories={expenseCategories} />
         </BaseModal>
       </Button>
 
       <div>
         <Headline title="Categorias - Mês Atual">
           <Link className="button" data-button-variant="link" to="/categories">
-            Ver mais
+            Ver tudo
             <ArrowRight />
           </Link>
         </Headline>
 
-        <div className="grid mt-l mb-s-m">
-          {categories.map((c) => (
-            <Card key={c.id}>
+        <div className="reel mt-l mb-s-m">
+          {expenseCategories.map((c) => (
+            <Card key={c.id} className="flow">
               <CardHeader>
-                <CardTitle>{c.name}</CardTitle>
+                <CardTitle className="font-bold">{c.name}</CardTitle>
               </CardHeader>
 
-              <CardContent>
-                <span>
+              <CardContent className="flex flex-col gap-2xs">
+                <div className="flex flex-row items-center gap-2xs">
+                  <Button data-button-variant="link">
+                    <Archive />
+                  </Button>
+                  <Button data-button-variant="link">
+                    <SquarePen />
+                  </Button>
+                </div>
+                <span className="font-mono font-medium">
                   Limite:{' '}
                   {`${budgets.find((b) => b.categoryId === c.id)?.limitAmount.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) ?? 'Não definido'}`}
                 </span>

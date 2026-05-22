@@ -1,0 +1,58 @@
+.reel {
+    /* ↓ Custom properties for ease of adjustment */
+    --space: 1rem;
+    --reel-height: auto;
+    --item-width: 25ch;
+    display: flex;
+    height: var(--reel-height);
+    /* ↓ Overflow */
+    overflow-x: auto;
+    overflow-y: hidden;
+    /* ↓ For Firefox */
+    scrollbar-color: var(--color-dark-glare) transparent;
+    padding-bottom: var(--spacing-2xs);
+}
+
+.reel > * {
+    flex: 0 0 var(--item-width);
+}
+
+.reel > img {
+    /* ↓ Reset for images */
+    height: 100%;
+    flex-basis: auto;
+    width: auto;
+}
+
+.reel::-webkit-scrollbar {
+    height: 0.5rem;
+}
+
+.reel::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+.reel::-webkit-scrollbar-thumb {
+    border-radius: var(--radius-full);
+    background-color: var(--color-dark-glare);
+}
+
+.reel::-webkit-scrollbar-button {
+    display: none;
+}
+
+.reel > * + * {
+    margin-left: var(--space);
+}
+
+.reel.overflowing:not(.no-bar) {
+/* ↓ Only apply if there is a scrollbar (see the JavaScript) */
+    padding-bottom: var(--space);
+}
+/* ↓ Hide scrollbar with `no-bar` class */
+.reel.no-bar {
+    scrollbar-width: none;
+}
+.reel.no-bar::-webkit-scrollbar {
+    display: none;
+}
