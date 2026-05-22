@@ -6,6 +6,7 @@ import { BudgetForm } from '~/features/budget/presentation/budget-form'
 import { BudgetProgress } from '~/features/budget/presentation/budget-progress'
 import { CopyBudgetLoader } from '~/features/budget/presentation/copy-budget-loader'
 import { DeleteBudgetAlert } from '~/features/budget/presentation/delete-alert'
+import { EditBudgetForm } from '~/features/budget/presentation/edit-budget-form'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/ui/card'
 import { Header } from '~/ui/Header'
@@ -91,7 +92,9 @@ export default function Budgets() {
                     isOpen={editBudget}
                     onClose={() => setEditBudget(true)}
                   >
-                    <p>Editar</p>
+                    <EditBudgetForm
+                      budget={budgets.find((b) => b.categoryId === c.id)}
+                    />
                   </BaseModal>
                 </div>
                 <span className="font-mono font-medium mb-s">

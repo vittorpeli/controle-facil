@@ -23,5 +23,5 @@ export async function createBudgetAction(formData: FormData, userId: UUID) {
     year: submission.value.year,
   })
 
-  return redirect('/budgets')
+  return redirect('/app/budgets')
 }

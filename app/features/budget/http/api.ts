@@ -7,6 +7,7 @@ import { DrizzleBudgetsRepository } from '../services/drizzle-budgets-repository
 import { copyBudgetAction } from './actions/copy-budget-action'
 import { createBudgetAction } from './actions/create-budget-action'
 import { deleteBudgetAction } from './actions/delete-budget-action'
+import { editBudgetAction } from './actions/edit-budget-action'
 
 type LoaderArgs = {
   request: Request
@@ -64,6 +65,8 @@ export async function action({ request }: ActionArgs) {
       return await copyBudgetAction(formData, user.id)
     case 'delete-budget':
       return await deleteBudgetAction(formData, user.id)
+    case 'edit-budget':
+      return await editBudgetAction(formData, user.id)
     default:
       throw new Error('Invalid intent')
   }
