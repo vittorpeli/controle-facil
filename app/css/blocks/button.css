@@ -51,11 +51,15 @@
     --button-y-padding: 0;
 }
 
-.button[data-button-variant="link"]:hover {
+.button[data-button-variant="link"]:not(:disabled):hover {
     text-decoration: underline;
 }
 
-.button[data-button-variant="link"]:has(svg):hover {
+.button[data-button-variant="link"]:has(svg):not(:disabled):hover {
     border-bottom: 2px solid currentColor;
     text-decoration: none;
+}
+
+.button[data-button-variant="link"]:disabled {
+    --button-text: var(--color-gray-400);
 }

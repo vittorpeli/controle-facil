@@ -63,7 +63,11 @@ export default function Budgets() {
 
       <div>
         <Headline title="Categorias - Mês Atual">
-          <Link className="button" data-button-variant="link" to="/categories">
+          <Link
+            className="button"
+            data-button-variant="link"
+            to="/app/categories"
+          >
             Ver categorias
             <ArrowRight />
           </Link>

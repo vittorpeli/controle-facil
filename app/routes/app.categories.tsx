@@ -1,10 +1,11 @@
-import { Plus } from 'lucide-react'
+import { Archive, Plus, SquarePen } from 'lucide-react'
 import { useLoaderData } from 'react-router'
 import { requireAuth } from '~/features/auth/services/require-auth'
 import { makeListCategoriesUseCase } from '~/features/categories/application/use-cases/list-categories'
+import { CategoryAccordion } from '~/features/categories/presentation/category-accordion'
 import { DrizzleCategoriesRepository } from '~/features/categories/services/drizzle-categories-repository'
 import { Button } from '~/ui/Button'
-import { Card, CardHeader, CardTitle } from '~/ui/card'
+import { Card, CardContent, CardHeader, CardTitle } from '~/ui/card'
 import { Headline } from '~/ui/headline'
 import type { Route } from './+types/app.categories'
 
@@ -27,11 +28,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     includeArchived: true,
   })
 
-  return categories
+  const parentCategories = categories.filter((c) => c.parentId === null)
+
+  return { categories, parentCategories }
 }
 
 export default function Categories() {
-  const categories = useLoaderData<typeof loader>()
+  const { categories, parentCategories } = useLoaderData<typeof loader>()
 
   return (
     <div className="flow">
@@ -48,15 +51,7 @@ export default function Categories() {
         </Button>
       </Headline>
 
-      <div className="grid">
-        {categories.map((c) => (
-          <Card key={c.id}>
-            <CardHeader>
-              <CardTitle>{c.name}</CardTitle>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
+      <CategoryAccordion parents={parentCategories} categories={categories} />
     </div>
   )
 }
