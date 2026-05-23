@@ -1,6 +1,5 @@
 import type { UUID } from 'node:crypto'
 import { parseWithZod } from '@conform-to/zod/v4'
-import { redirect } from 'react-router'
 import { makeCopyBudgetUseCase } from '../../application/use-cases/copy-budget'
 import { DrizzleBudgetsRepository } from '../../services/drizzle-budgets-repository'
 import { copyBudgetSchema } from '../schemas/copy-budget-schema'
@@ -21,5 +20,5 @@ export async function copyBudgetAction(formData: FormData, userId: UUID) {
     year: submission.value.year,
   })
 
-  return redirect('/app/budgets')
+  return Response.json({ success: true })
 }

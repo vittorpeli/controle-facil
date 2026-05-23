@@ -1,6 +1,7 @@
 import { useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
-import { useFetcher } from 'react-router'
+import { useEffect } from 'react'
+import { useFetcher, useRevalidator } from 'react-router'
 import { Button } from '~/ui/Button'
 import type { BudgetProgress } from '../core/budget'
 import { deleteBudgetSchema } from '../http/schemas/delete-budget-schema'
@@ -19,6 +20,7 @@ export function DeleteBudgetAlert({
   budget,
 }: ConfirmationAlertProps) {
   const fetcher = useFetcher()
+  const revalidator = useRevalidator()
 
   const [form, fields] = useForm({
     constraint: getZodConstraint(deleteBudgetSchema),
@@ -30,6 +32,13 @@ export function DeleteBudgetAlert({
     },
     shouldValidate: 'onBlur',
   })
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      onCancel()
+      revalidator.revalidate()
+    }
+  }, [fetcher.data, onCancel, revalidator])
 
   if (!isOpen || !budget) return null
 

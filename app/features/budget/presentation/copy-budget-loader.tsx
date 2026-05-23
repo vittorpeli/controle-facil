@@ -1,7 +1,8 @@
 import { useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
 import { Copy } from 'lucide-react'
-import { useFetcher } from 'react-router'
+import { useEffect } from 'react'
+import { useFetcher, useRevalidator } from 'react-router'
 import { Button } from '~/ui/Button'
 import { createBudgetSchema } from '../http/schemas/create-budget-schema'
 
@@ -19,8 +20,15 @@ export const CopyBudgetLoader = () => {
     shouldValidate: 'onBlur',
   })
 
+  const revalidator = useRevalidator()
   const currentMonth = new Date().getMonth()
   const currentYear = new Date().getFullYear()
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      revalidator.revalidate()
+    }
+  }, [fetcher.data, revalidator])
 
   return (
     <div className="mt-s-m">

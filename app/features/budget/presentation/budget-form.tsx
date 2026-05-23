@@ -1,14 +1,22 @@
 import { useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
-import { useFetcher } from 'react-router'
+import { useEffect } from 'react'
+import { useFetcher, useRevalidator } from 'react-router'
 import type { Category } from '~/features/categories/core/category'
 import { Button } from '~/ui/Button'
 import { Label, Option, Select } from '~/ui/form'
 import { CurrencyInput } from '~/ui/form/currency-input'
 import { createBudgetSchema } from '../http/schemas/create-budget-schema'
 
-export const BudgetForm = ({ categories }: { categories: Category[] }) => {
+export const BudgetForm = ({
+  categories,
+  onSuccess,
+}: {
+  categories: Category[]
+  onSuccess: () => void
+}) => {
   const fetcher = useFetcher()
+  const revalidator = useRevalidator()
 
   const [form, fields] = useForm({
     constraint: getZodConstraint(createBudgetSchema),
@@ -23,6 +31,13 @@ export const BudgetForm = ({ categories }: { categories: Category[] }) => {
 
   const currentMonth = new Date().getMonth()
   const currentYear = new Date().getFullYear()
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      onSuccess()
+      revalidator.revalidate()
+    }
+  }, [fetcher.data, onSuccess, revalidator])
 
   return (
     <fetcher.Form

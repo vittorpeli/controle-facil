@@ -1,6 +1,7 @@
 import { useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
-import { useFetcher } from 'react-router'
+import { useEffect } from 'react'
+import { useFetcher, useRevalidator } from 'react-router'
 import { Button } from '~/ui/Button'
 import { Label } from '~/ui/form'
 import { CurrencyInput } from '~/ui/form/currency-input'
@@ -17,6 +18,7 @@ export const EditBudgetForm = ({
   name: string
 }) => {
   const fetcher = useFetcher()
+  const revalidator = useRevalidator()
 
   const [form, fields] = useForm({
     constraint: getZodConstraint(editBudgetSchema),
@@ -28,6 +30,13 @@ export const EditBudgetForm = ({
     },
     shouldValidate: 'onBlur',
   })
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      onCancel()
+      revalidator.revalidate()
+    }
+  }, [fetcher.data, onCancel, revalidator])
 
   if (!budget) return null
 

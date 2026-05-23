@@ -1,6 +1,5 @@
 import type { UUID } from 'node:crypto'
 import { parseWithZod } from '@conform-to/zod/v4'
-import { redirect } from 'react-router'
 import { makeCreateBudgetUseCase } from '../../application/use-cases/create-budget'
 import { DrizzleBudgetsRepository } from '../../services/drizzle-budgets-repository'
 import { createBudgetSchema } from '../schemas/create-budget-schema'
@@ -23,5 +22,5 @@ export async function createBudgetAction(formData: FormData, userId: UUID) {
     year: submission.value.year,
   })
 
-  return redirect('/app/budgets')
+  return Response.json({ success: true })
 }

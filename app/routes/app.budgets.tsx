@@ -54,7 +54,10 @@ export default function Budgets() {
           isOpen={isBudgetModalOpen}
           onClose={() => setIsBudgetModalOpen(false)}
         >
-          <BudgetForm categories={expenseCategories} />
+          <BudgetForm
+            categories={expenseCategories}
+            onSuccess={() => setIsBudgetModalOpen(false)}
+          />
         </BaseModal>
       </Button>
 
