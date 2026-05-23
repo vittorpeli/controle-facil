@@ -29,7 +29,7 @@ export const EditAccountModal = ({
   account,
   onCancel,
 }: {
-  account: Account
+  account: Account | null
   onCancel: () => void
 }): React.ReactNode => {
   const fetcher = useFetcher()
@@ -45,6 +45,8 @@ export const EditAccountModal = ({
     shouldValidate: 'onBlur',
   })
 
+  if (account === null) return null
+
   return (
     <fetcher.Form
       className="flow"
@@ -52,7 +54,7 @@ export const EditAccountModal = ({
       id={form.id}
       onSubmit={form.onSubmit}
     >
-      <Input type="hidden" name="intent" value="create-account" />
+      <Input type="hidden" name="intent" value="edit-account" />
 
       <Input type="hidden" name={fields.accountId.name} value={account.id} />
 

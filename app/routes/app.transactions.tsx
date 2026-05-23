@@ -7,6 +7,7 @@ import { CreateAccountModal } from '~/features/transactions/components/create-ac
 import { CreateTransactionModal } from '~/features/transactions/components/create-transaction-modal'
 import { EditAccountModal } from '~/features/transactions/components/edit-account-modal'
 import { TransferForm } from '~/features/transactions/components/transfer-form'
+import type { Account } from '~/features/transactions/core/account'
 import { action, loader } from '~/features/transactions/services/api'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader } from '~/ui/card'
@@ -38,6 +39,8 @@ export default function Transactions() {
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isTransferModalOpen, setIsTrasnferModalOpen] = useState(false)
+
+  const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
 
   const { accounts, transactions, categories } = useLoaderData<typeof loader>()
 
@@ -84,13 +87,19 @@ export default function Transactions() {
                   <div className="flex flex-row items-center gap-2xs mr-s">
                     <Button
                       data-button-variant="link"
-                      onClick={() => setIsAlertOpen(true)}
+                      onClick={() => {
+                        setSelectedAccount(account)
+                        setIsAlertOpen(true)
+                      }}
                     >
                       <Archive />
                     </Button>
                     <Button
                       data-button-variant="link"
-                      onClick={() => setIsEditModalOpen(true)}
+                      onClick={() => {
+                        setSelectedAccount(account)
+                        setIsEditModalOpen(true)
+                      }}
                     >
                       <SquarePen />
                     </Button>
@@ -99,7 +108,7 @@ export default function Transactions() {
                       onClose={() => setIsEditModalOpen(false)}
                     >
                       <EditAccountModal
-                        account={account}
+                        account={selectedAccount}
                         onCancel={() => setIsEditModalOpen(false)}
                       />
                     </BaseModal>
@@ -120,7 +129,7 @@ export default function Transactions() {
                 message="Você tem certeza que quer arquivar essa conta?"
                 isOpen={isAlertOpen}
                 onCancel={() => setIsAlertOpen(false)}
-                account={account}
+                account={selectedAccount}
               />
             </Card>
           ))}
