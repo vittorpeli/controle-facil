@@ -1,6 +1,5 @@
 import type { UUID } from 'node:crypto'
 import { parseWithZod } from '@conform-to/zod/v4'
-import { redirect } from 'react-router'
 import { makeCreateTransferUseCase } from '../../application/use-cases/create-transfer'
 import { DrizzleAccountsRepository } from '../drizzle-accounts-repository'
 import { DrizzleTransactionsRepository } from '../drizzle-transactions-repository'
@@ -30,5 +29,5 @@ export async function createTransferAction(formData: FormData, userId: UUID) {
     description: submission.value.description ?? '',
   })
 
-  return redirect('/app/transactions')
+  return Response.json({ success: true })
 }

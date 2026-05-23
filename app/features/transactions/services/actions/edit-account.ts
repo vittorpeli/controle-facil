@@ -1,6 +1,5 @@
 import type { UUID } from 'node:crypto'
 import { parseWithZod } from '@conform-to/zod/v4'
-import { redirect } from 'react-router'
 import { makeEditAccountUseCase } from '../../application/use-cases/edit-account'
 import { DrizzleAccountsRepository } from '../drizzle-accounts-repository'
 import { editAccountSchema } from '../schemas/edit-account-schema'
@@ -22,5 +21,5 @@ export async function editAccountAction(formData: FormData, userId: UUID) {
     institution: submission.value.institution || null,
   })
 
-  return redirect('/app/transactions')
+  return Response.json({ success: true })
 }

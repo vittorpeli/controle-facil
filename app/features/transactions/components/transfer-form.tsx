@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
 import { useFetcher } from 'react-router'
@@ -9,8 +10,10 @@ import { createTransferSchema } from '../services/schemas/create-transfer-schema
 
 export const TransferForm = ({
   accounts,
+  onSuccess,
 }: {
   accounts: Account[]
+  onSuccess: () => void
 }): React.ReactNode => {
   const fetcher = useFetcher()
 
@@ -24,6 +27,12 @@ export const TransferForm = ({
     },
     shouldValidate: 'onBlur',
   })
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      onSuccess()
+    }
+  }, [fetcher.data, onSuccess])
 
   return (
     <fetcher.Form

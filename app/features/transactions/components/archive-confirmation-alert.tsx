@@ -1,5 +1,6 @@
 import { useForm } from '@conform-to/react'
 import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
+import { useEffect } from 'react'
 import { useFetcher } from 'react-router'
 import { Button } from '~/ui/Button'
 import type { Account } from '../core/account'
@@ -30,6 +31,12 @@ export function ArchiveConfirmationAlert({
     },
     shouldValidate: 'onBlur',
   })
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      onCancel()
+    }
+  }, [fetcher.data, onCancel])
 
   if (!isOpen || !account) return null
 

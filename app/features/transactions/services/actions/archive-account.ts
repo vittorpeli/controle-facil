@@ -1,6 +1,5 @@
 import type { UUID } from 'node:crypto'
 import { parseWithZod } from '@conform-to/zod/v4'
-import { redirect } from 'react-router'
 import { makeArchiveAccountUseCase } from '../../application/use-cases/archive-account'
 import { DrizzleAccountsRepository } from '../drizzle-accounts-repository'
 import { archiveAccountSchema } from '../schemas/archive-account-schema'
@@ -21,5 +20,8 @@ export async function archiveAccountAction(formData: FormData, userId: UUID) {
     userId,
   })
 
-  return redirect('/app/transactions')
+  return Response.json({
+    success: true,
+    accountId: submission.value.accountId as UUID,
+  })
 }

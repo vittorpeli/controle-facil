@@ -76,7 +76,7 @@ export default function Transactions() {
             isOpen={isAccountModalOpen}
             onClose={() => setIsAccountModalOpen(false)}
           >
-            <CreateAccountModal />
+            <CreateAccountModal onSuccess={() => setIsAccountModalOpen(false)} />
           </BaseModal>
         </Headline>
         <div className="grid">
@@ -151,7 +151,10 @@ export default function Transactions() {
             isOpen={isTransferModalOpen}
             onClose={() => setIsTrasnferModalOpen(false)}
           >
-            <TransferForm accounts={accounts} />
+            <TransferForm
+              accounts={accounts}
+              onSuccess={() => setIsTrasnferModalOpen(false)}
+            />
           </BaseModal>
         </div>
       ) : null}
@@ -171,6 +174,7 @@ export default function Transactions() {
             <CreateTransactionModal
               accounts={accounts}
               categories={categories}
+              onSuccess={() => setIsTransactionModalOpen(false)}
             />
           </BaseModal>
         </Headline>
