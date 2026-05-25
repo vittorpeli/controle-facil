@@ -12,6 +12,9 @@ export const CategoryAccordion = ({
   categories: Category[]
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null,
+  )
 
   const onTitleClick = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index)
@@ -78,7 +81,9 @@ export const CategoryAccordion = ({
                     </Card>
                   ))
                 ) : (
-                  <p>Nenhuma categoria filha encontrada.</p>
+                  <p className="text-step--1">
+                    Nenhuma categoria filha encontrada.
+                  </p>
                 )}
               </div>
             )}

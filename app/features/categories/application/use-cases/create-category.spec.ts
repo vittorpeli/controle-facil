@@ -81,18 +81,6 @@ describe('Create Category Use Case', () => {
 
   // ─── Validações ──────────────────────────────────────────────────────────
 
-  it('should throw if name is empty', async () => {
-    await expect(sut({ userId: USER_ID, name: '' })).rejects.toThrow(
-      'name cannot be empty',
-    )
-  })
-
-  it('should throw if name is blank (only whitespace)', async () => {
-    await expect(sut({ userId: USER_ID, name: '   ' })).rejects.toThrow(
-      'name cannot be empty',
-    )
-  })
-
   it('should throw if parentId does not exist', async () => {
     await expect(
       sut({ userId: USER_ID, name: 'Cinema', parentId: randomUUID() as UUID }),

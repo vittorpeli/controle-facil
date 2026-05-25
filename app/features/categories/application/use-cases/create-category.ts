@@ -20,11 +20,7 @@ export const makeCreateCategoryUseCase = (
     name,
     parentId,
   }: CreateCategoryRequest): Promise<CreateCategoryResponse> => {
-    if (!name.trim()) {
-      throw new Error('name cannot be empty')
-    }
-
-    if (parentId !== undefined) {
+    if (parentId !== undefined && parentId !== null) {
       const parent = await categoriesRepository.findById(parentId)
 
       // Não encontrado OU pertence a outro usuário e não é padrão

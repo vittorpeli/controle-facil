@@ -193,6 +193,11 @@
     filter: brightness(110%);
 }
 
+.select:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
 .option {
     font-size: var(--text-step--1);
 }
