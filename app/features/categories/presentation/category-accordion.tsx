@@ -2,7 +2,9 @@ import { Archive, ChevronDown, ChevronUp, SquarePen } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/ui/card'
+import { BaseModal } from '~/ui/modal'
 import type { Category } from '../core/category'
+import { EditCategoryForm } from './edit-form'
 
 export const CategoryAccordion = ({
   parents,
@@ -12,9 +14,12 @@ export const CategoryAccordion = ({
   categories: Category[]
 }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(
     null,
   )
+  const [openParentEditModal, setOpenParentEditModal] = useState(false)
+  const [openChildEditModal, setOpenChildEditModal] = useState(false)
 
   const onTitleClick = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index)
@@ -25,7 +30,7 @@ export const CategoryAccordion = ({
       {parents.map((parent, index) => {
         const isActive = index === activeIndex
         const childCategories = categories.filter(
-          (c) => c.parentId === parent.id,
+          (c) => c.parentId === parent.id && c.isArchived === false,
         )
 
         return (
@@ -43,9 +48,25 @@ export const CategoryAccordion = ({
                       <Archive />
                     </Button>
 
-                    <Button data-button-variant="link">
+                    <Button
+                      data-button-variant="link"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedCategory(parent)
+                        setOpenParentEditModal(true)
+                      }}
+                    >
                       <SquarePen />
                     </Button>
+                    <BaseModal
+                      isOpen={openParentEditModal}
+                      onClose={() => setOpenParentEditModal(false)}
+                    >
+                      <EditCategoryForm
+                        category={selectedCategory}
+                        onCancel={() => setOpenParentEditModal(false)}
+                      />
+                    </BaseModal>
                   </div>
                 ) : null}
               </div>
@@ -73,9 +94,22 @@ export const CategoryAccordion = ({
                           <Button
                             data-button-variant="link"
                             disabled={c.isDefault}
+                            onClick={() => {
+                              setSelectedCategory(c)
+                              setOpenChildEditModal(true)
+                            }}
                           >
                             <SquarePen />
                           </Button>
+                          <BaseModal
+                            isOpen={openChildEditModal}
+                            onClose={() => setOpenChildEditModal(false)}
+                          >
+                            <EditCategoryForm
+                              category={selectedCategory}
+                              onCancel={() => setOpenChildEditModal(false)}
+                            />
+                          </BaseModal>
                         </div>
                       </CardContent>
                     </Card>
