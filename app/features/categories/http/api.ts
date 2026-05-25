@@ -2,6 +2,7 @@ import { requireAuth } from '~/features/auth/services/require-auth'
 import type { Route } from '../../../routes/+types/app.categories'
 import { makeListCategoriesUseCase } from '../application/use-cases/list-categories'
 import { DrizzleCategoriesRepository } from '../services/drizzle-categories-repository'
+import { archiveCategoryAction } from './action/archive-category-action'
 import { createCategoryAction } from './action/create-category-action'
 import { editCategoryAction } from './action/edit-category-action'
 
@@ -31,6 +32,8 @@ export async function action({ request }: Route.ActionArgs) {
       return await createCategoryAction(formData, user.id)
     case 'edit-category':
       return await editCategoryAction(formData, user.id)
+    case 'archive-category':
+      return await archiveCategoryAction(formData, user.id)
     default:
       throw new Error('Invalid Intent')
   }

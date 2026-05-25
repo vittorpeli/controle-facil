@@ -4,6 +4,7 @@ import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader, CardTitle } from '~/ui/card'
 import { BaseModal } from '~/ui/modal'
 import type { Category } from '../core/category'
+import { ArchiveCategoryAlert } from './confirmation-alert'
 import { EditCategoryForm } from './edit-form'
 
 export const CategoryAccordion = ({
@@ -20,6 +21,9 @@ export const CategoryAccordion = ({
   )
   const [openParentEditModal, setOpenParentEditModal] = useState(false)
   const [openChildEditModal, setOpenChildEditModal] = useState(false)
+
+  const [openParentAlert, setOpenParentAlert] = useState(false)
+  const [openChildAlert, setOpenChildAlert] = useState(false)
 
   const onTitleClick = (index: number) => {
     setActiveIndex(index === activeIndex ? null : index)
@@ -44,7 +48,15 @@ export const CategoryAccordion = ({
                 {parent.name}
                 {!parent.isDefault ? (
                   <div className="flex flex-row items-center gap-3xs">
-                    <Button data-button-variant="link">
+                    <Button
+                      data-button-variant="link"
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        setSelectedCategory(parent)
+                        setOpenParentAlert(true)
+                      }}
+                      disabled={parent.isArchived}
+                    >
                       <Archive />
                     </Button>
 
@@ -67,11 +79,24 @@ export const CategoryAccordion = ({
                         onCancel={() => setOpenParentEditModal(false)}
                       />
                     </BaseModal>
+
+                    {parent.isArchived && (
+                      <span className="text-step--2 font-mono">
+                        Categoria Pai Arquivada
+                      </span>
+                    )}
                   </div>
                 ) : null}
               </div>
               <span>{isActive ? <ChevronUp /> : <ChevronDown />}</span>
             </button>
+
+            <ArchiveCategoryAlert
+              isOpen={openParentAlert}
+              onCancel={() => setOpenParentAlert(false)}
+              category={parent}
+              message="Você tem certeza que quer arquivar essa categoria?"
+            />
 
             {isActive && (
               <div className="grid border border-neutral-200 bg-neutral-50 py-xs px-2xs rounded-b-md">
@@ -87,9 +112,19 @@ export const CategoryAccordion = ({
                           <Button
                             data-button-variant="link"
                             disabled={c.isDefault}
+                            onClick={() => {
+                              setSelectedCategory(parent)
+                              setOpenChildAlert(true)
+                            }}
                           >
                             <Archive />
                           </Button>
+                          <ArchiveCategoryAlert
+                            isOpen={openChildAlert}
+                            onCancel={() => setOpenChildAlert(false)}
+                            category={parent}
+                            message="Você tem certeza que quer arquivar essa categoria?"
+                          />
 
                           <Button
                             data-button-variant="link"
@@ -116,7 +151,7 @@ export const CategoryAccordion = ({
                   ))
                 ) : (
                   <p className="text-step--1">
-                    Nenhuma categoria filha encontrada.
+                    Nenhuma categoria filha ativa encontrada.
                   </p>
                 )}
               </div>

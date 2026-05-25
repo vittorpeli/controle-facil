@@ -1,0 +1,75 @@
+import { useForm } from '@conform-to/react'
+import { getZodConstraint, parseWithZod } from '@conform-to/zod/v4'
+import { useEffect } from 'react'
+import { useFetcher } from 'react-router'
+import { Button } from '~/ui/Button'
+import type { Category } from '../core/category'
+import { archiveCategorySchema } from '../http/schema/archive-category-schema'
+
+interface ConfirmationAlertProps {
+  message?: string
+  onCancel: () => void
+  isOpen: boolean
+  category: Category | null
+}
+
+export function ArchiveCategoryAlert({
+  message,
+  onCancel,
+  isOpen,
+  category,
+}: ConfirmationAlertProps) {
+  const fetcher = useFetcher()
+
+  const [form, fields] = useForm({
+    constraint: getZodConstraint(archiveCategorySchema),
+    lastResult: fetcher.data,
+    onValidate({ formData }) {
+      return parseWithZod(formData, {
+        schema: archiveCategorySchema,
+      })
+    },
+    shouldValidate: 'onBlur',
+  })
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      onCancel()
+    }
+  }, [fetcher.data, onCancel])
+
+  if (!isOpen || !category) return null
+
+  return (
+    <div className="fixed inset-0 bg-primary/40 flex items-center justify-center z-50">
+      <div className="bg-light rounded-lg shadow-lg p-6 max-w-sm w-full mx-4">
+        {message && (
+          <p className="text-dark-glare mb-6 text-step--2">{message}</p>
+        )}
+        <div className="flex gap-3 justify-end">
+          <Button onClick={onCancel} className="mt-4 text-step--2">
+            Cancelar
+          </Button>
+          <fetcher.Form method="post" id={form.id} onSubmit={form.onSubmit}>
+            <input type="hidden" name="intent" value="archive-category" />
+
+            <input
+              type="hidden"
+              name={fields.categoryId.name}
+              value={category.id}
+            />
+
+            <Button
+              type="submit"
+              className="bg-error hover:bg-red-700 transition"
+              disabled={fetcher.state !== 'idle'}
+            >
+              {fetcher.state !== 'idle' ? 'Arquivando...' : 'Sim'}
+            </Button>
+          </fetcher.Form>
+        </div>
+        <p className="text-error text-step--2">{fields.categoryId.errors}</p>
+      </div>
+    </div>
+  )
+}
