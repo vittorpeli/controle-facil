@@ -8,11 +8,12 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { useLoaderData } from 'react-router'
-import type { Goal } from '~/features/goals/core/goal'
+import type { Goal, GoalWithProgress } from '~/features/goals/core/goal'
 import { action, loader } from '~/features/goals/http/api'
 import { ContributionForm } from '~/features/goals/presentation/contribution-form'
 import { CreateGoalForm } from '~/features/goals/presentation/create-goal-form'
 import { DeleteGoalConfirmation } from '~/features/goals/presentation/delete-confirmation'
+import { GoalProgressBar } from '~/features/goals/presentation/progress-bar'
 import { UpdateGoalForm } from '~/features/goals/presentation/update-goal-form'
 import { dateFormatter } from '~/features/shared/date-formatter'
 import { Button } from '~/ui/Button'
@@ -45,6 +46,14 @@ export default function Goals() {
 
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null)
 
+  const goalWithHighestProgress = goals
+    .filter((goal) => !goal.isCompleted)
+    .reduce<GoalWithProgress | null>((highest, current) => {
+      if (!highest) return current
+
+      return current.progress > highest.progress ? current : highest
+    }, null)
+
   return (
     <div className="flow">
       <Header
@@ -58,11 +67,23 @@ export default function Goals() {
         title="Meta com maior progresso"
         icon={<TrendingUp className="size-[1em]" />}
       >
-        <PanelInfo>
-          <h4>Nome da meta</h4>
-          <p>Descrição</p>
-          <span>Progresso</span>
-        </PanelInfo>
+        {goalWithHighestProgress ? (
+          <PanelInfo className="flow">
+            <h4>{goalWithHighestProgress.name}</h4>
+            {goalWithHighestProgress.description ? (
+              <p>{goalWithHighestProgress.description}</p>
+            ) : null}
+            <GoalProgressBar
+              value={goalWithHighestProgress.progress}
+              currentAmount={goalWithHighestProgress.currentAmount}
+              targetAmount={goalWithHighestProgress.targetAmount}
+            />
+          </PanelInfo>
+        ) : (
+          <PanelInfo>
+            <h4>Nenhuma meta em andamento</h4>
+          </PanelInfo>
+        )}
         <PanelInfo>
           <h4>{`Salvos totais (todas as metas)`}</h4>
           <p>R$ 1.250</p>
