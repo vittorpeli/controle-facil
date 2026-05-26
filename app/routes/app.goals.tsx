@@ -6,11 +6,10 @@ import {
   Trash,
   TrendingUp,
 } from 'lucide-react'
+import { useState } from 'react'
 import { useLoaderData } from 'react-router'
-import { requireAuth } from '~/features/auth/services/require-auth'
-import { makeListGoalsUseCase } from '~/features/goals/application/use-cases/list-goals'
-import { DrizzleContributionsRepository } from '~/features/goals/services/drizzle-contributions-repository'
-import { DrizzleGoalsRepository } from '~/features/goals/services/drizzle-goals-repository'
+import { action, loader } from '~/features/goals/http/api'
+import { CreateGoalForm } from '~/features/goals/presentation/create-goal-form'
 import { dateFormatter } from '~/features/shared/date-formatter'
 import { Button } from '~/ui/Button'
 import {
@@ -23,30 +22,19 @@ import {
 } from '~/ui/card'
 import { Header } from '~/ui/Header'
 import { Headline } from '~/ui/headline'
+import { BaseModal } from '~/ui/modal'
 import { Panel, PanelInfo } from '~/ui/panel'
-import type { Route } from './+types/app.goals'
 
 export function meta() {
   return [{ title: 'Metas' }, { name: 'Metas', content: 'Financial Goals' }]
 }
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const user = await requireAuth(request)
-
-  const goalsRepository = new DrizzleGoalsRepository()
-  const contributionsRepository = new DrizzleContributionsRepository()
-  const listGoals = makeListGoalsUseCase(
-    goalsRepository,
-    contributionsRepository,
-  )
-
-  const { goals } = await listGoals({ userId: user.id })
-
-  return { goals }
-}
+export { action, loader }
 
 export default function Goals() {
   const { goals } = useLoaderData<typeof loader>()
+
+  const [isCreateOpen, setIsCreateOpen] = useState(false)
 
   return (
     <div className="flow">
@@ -74,11 +62,18 @@ export default function Goals() {
 
       <div className="flow mt-xl">
         <Headline title="Metas">
-          <Button data-button-variant="link" className="text-dark-glare">
+          <Button
+            onClick={() => setIsCreateOpen(true)}
+            data-button-variant="link"
+            className="text-dark-glare"
+          >
             <Plus />
             <span>Adicionar nova meta</span>
           </Button>
         </Headline>
+        <BaseModal isOpen={isCreateOpen} onClose={() => setIsCreateOpen(false)}>
+          <CreateGoalForm onExit={() => setIsCreateOpen(false)} />
+        </BaseModal>
         <div className="grid">
           {goals.length > 0 ? (
             goals.map((goal) => (
@@ -99,7 +94,7 @@ export default function Goals() {
 
                 <CardContent className="flow">
                   <CardDescription className="flex flex-col gap-3xs">
-                    {goal.description}
+                    {goal.description ?? null}
                     {goal.projectedCompletionDate && (
                       <span className="text-step--2">
                         {`Projeção de conclusão: ${dateFormatter.format(goal.projectedCompletionDate)}`}
