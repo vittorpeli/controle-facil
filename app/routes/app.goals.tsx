@@ -61,6 +61,11 @@ export default function Goals() {
     0,
   )
 
+  const orderedGoals = [...goals].sort((a, b) => {
+    if (a.progress !== b.progress) return a.progress - b.progress
+    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+  })
+
   return (
     <div className="flow">
       <Header
@@ -135,7 +140,7 @@ export default function Goals() {
         </BaseModal>
         <div className="grid">
           {goals.length > 0 ? (
-            goals.map((goal) => (
+            orderedGoals.map((goal) => (
               <Card key={goal.id}>
                 <CardHeader className="flow">
                   <div className="flex justify-between items-center">
@@ -154,11 +159,24 @@ export default function Goals() {
                 <CardContent className="flow">
                   <CardDescription className="flex flex-col gap-3xs">
                     {goal.description ?? null}
-                    {goal.projectedCompletionDate && (
-                      <span className="text-step--2">
-                        {`Projeção de conclusão: ${dateFormatter.format(goal.projectedCompletionDate)}`}
+                    <div className="flex flex-col">
+                      <span className="text-step--2 cluster">
+                        Valor Alvo:{' '}
+                        {currencyFormatter.format(goal.targetAmount)}
                       </span>
-                    )}
+
+                      {goal.currentAmount && (
+                        <span className="text-step--2 cluster">
+                          {`Acumulado: ${currencyFormatter.format(goal.currentAmount)}`}
+                        </span>
+                      )}
+
+                      {goal.projectedCompletionDate && (
+                        <span className="text-step--2">
+                          {`Projeção de conclusão: ${dateFormatter.format(goal.projectedCompletionDate)}`}
+                        </span>
+                      )}
+                    </div>
                   </CardDescription>
                   <CardAction className="flex justify-between items-center">
                     <Button
