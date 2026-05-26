@@ -2,6 +2,7 @@ import {
   BanknoteArrowUp,
   Landmark,
   Plus,
+  Sparkles,
   SquarePen,
   Trash,
   TrendingUp,
@@ -15,6 +16,7 @@ import { CreateGoalForm } from '~/features/goals/presentation/create-goal-form'
 import { DeleteGoalConfirmation } from '~/features/goals/presentation/delete-confirmation'
 import { GoalProgressBar } from '~/features/goals/presentation/progress-bar'
 import { UpdateGoalForm } from '~/features/goals/presentation/update-goal-form'
+import { currencyFormatter } from '~/features/shared/currency-formatter'
 import { dateFormatter } from '~/features/shared/date-formatter'
 import { Button } from '~/ui/Button'
 import {
@@ -54,6 +56,11 @@ export default function Goals() {
       return current.progress > highest.progress ? current : highest
     }, null)
 
+  const totalContributed = goals.reduce(
+    (sum, goal) => sum + goal.currentAmount,
+    0,
+  )
+
   return (
     <div className="flow">
       <Header
@@ -85,8 +92,30 @@ export default function Goals() {
           </PanelInfo>
         )}
         <PanelInfo>
-          <h4>{`Salvos totais (todas as metas)`}</h4>
-          <p>R$ 1.250</p>
+          <Card>
+            <CardHeader style={{ gap: 'var(--spacing-3xs)' }}>
+              <CardTitle className="flex gap-3xs items-center">
+                <span className="text-step-1 font-medium">Salvos Totais</span>
+                <span className="text-step--2">Todas as metas*</span>
+              </CardTitle>
+              <h2>{currencyFormatter.format(totalContributed)}</h2>
+            </CardHeader>
+
+            <CardContent>
+              <div className="flex gap-2xs px-s items-center">
+                <span className="bg-secondary text-primary rounded-full p-2xs">
+                  <Sparkles
+                    className="size-[0.8em]"
+                    fill="var(--color-primary)"
+                  />
+                </span>
+                <span className="cluster text-step--1">
+                  Nunca deixe de separar o dinheiro do seu futuro. Pague-se
+                  primeiro!
+                </span>
+              </div>
+            </CardContent>
+          </Card>
         </PanelInfo>
       </Panel>
 
