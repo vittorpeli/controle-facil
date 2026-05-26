@@ -8,8 +8,10 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { useLoaderData } from 'react-router'
+import type { Goal } from '~/features/goals/core/goal'
 import { action, loader } from '~/features/goals/http/api'
 import { CreateGoalForm } from '~/features/goals/presentation/create-goal-form'
+import { UpdateGoalForm } from '~/features/goals/presentation/update-goal-form'
 import { dateFormatter } from '~/features/shared/date-formatter'
 import { Button } from '~/ui/Button'
 import {
@@ -35,6 +37,9 @@ export default function Goals() {
   const { goals } = useLoaderData<typeof loader>()
 
   const [isCreateOpen, setIsCreateOpen] = useState(false)
+  const [isUpdateOpen, setIsUpdateOpen] = useState(false)
+
+  const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null)
 
   return (
     <div className="flow">
@@ -107,9 +112,25 @@ export default function Goals() {
                       <BanknoteArrowUp />
                     </Button>
                     <div className="flex gap-2xs">
-                      <Button data-button-variant="link">
+                      <Button
+                        onClick={() => {
+                          setSelectedGoal(goal)
+                          setIsUpdateOpen(true)
+                        }}
+                        data-button-variant="link"
+                      >
                         <SquarePen />
                       </Button>
+                      <BaseModal
+                        isOpen={isUpdateOpen}
+                        onClose={() => setIsUpdateOpen(false)}
+                      >
+                        <UpdateGoalForm
+                          goal={selectedGoal ?? null}
+                          onExit={() => setIsUpdateOpen(false)}
+                        />
+                      </BaseModal>
+
                       <Button data-button-variant="link">
                         <Trash />
                       </Button>

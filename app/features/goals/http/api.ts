@@ -4,6 +4,7 @@ import { makeListGoalsUseCase } from '../application/use-cases/list-goals'
 import { DrizzleContributionsRepository } from '../services/drizzle-contributions-repository'
 import { DrizzleGoalsRepository } from '../services/drizzle-goals-repository'
 import { createGoalAction } from './actions/create-goal-action'
+import { updateGoalAction } from './actions/update-goal-action'
 
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await requireAuth(request)
@@ -28,6 +29,8 @@ export async function action({ request }: Route.ActionArgs) {
   switch (intent) {
     case 'create-goal':
       return await createGoalAction(formData, user.id)
+    case 'update-goal':
+      return await updateGoalAction(formData, user.id)
     default:
       throw new Error('Invalid Intent')
   }
