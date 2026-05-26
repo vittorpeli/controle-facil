@@ -7,8 +7,13 @@ import type { Goal } from '../core/goal'
 
 // Banco -> Domínio
 function parseLocalDate(dateString: string): Date {
-  const [year, month, day] = dateString.split('-').map(Number)
-  return new Date(year, month - 1, day)
+  const date = new Date(dateString)
+
+  if (Number.isNaN(date.getTime())) {
+    throw new Error(`Invalid date: ${dateString}`)
+  }
+
+  return date
 }
 
 function toDomain(row: typeof goals.$inferSelect): Goal {
