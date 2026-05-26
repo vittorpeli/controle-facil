@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { useLoaderData } from 'react-router'
 import type { Goal } from '~/features/goals/core/goal'
 import { action, loader } from '~/features/goals/http/api'
+import { ContributionForm } from '~/features/goals/presentation/contribution-form'
 import { CreateGoalForm } from '~/features/goals/presentation/create-goal-form'
 import { DeleteGoalConfirmation } from '~/features/goals/presentation/delete-confirmation'
 import { UpdateGoalForm } from '~/features/goals/presentation/update-goal-form'
@@ -35,11 +36,12 @@ export function meta() {
 export { action, loader }
 
 export default function Goals() {
-  const { goals } = useLoaderData<typeof loader>()
+  const { goals, accounts } = useLoaderData<typeof loader>()
 
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [isUpdateOpen, setIsUpdateOpen] = useState(false)
   const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
+  const [isContributionOpen, setIsContributionOpen] = useState(false)
 
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null)
 
@@ -91,7 +93,7 @@ export default function Goals() {
                       <Landmark className="size-[1em]" />
                     </span>
                     <span className="flex items-center justify-center w-[3ch] h-[3ch] rounded-[50%] p-[1.2em] bg-light text-primary">
-                      {`${goal.progress}%`}
+                      {`${goal.progress.toFixed(0)}%`}
                     </span>
                   </div>
                   <CardTitle className="font-display font-medium">
@@ -109,10 +111,27 @@ export default function Goals() {
                     )}
                   </CardDescription>
                   <CardAction className="flex justify-between items-center">
-                    <Button className="text-step--2">
+                    <Button
+                      onClick={() => {
+                        setSelectedGoal(goal)
+                        setIsContributionOpen(true)
+                      }}
+                      className="text-step--2"
+                    >
                       Fazer Aporte
                       <BanknoteArrowUp />
                     </Button>
+                    <BaseModal
+                      isOpen={isContributionOpen}
+                      onClose={() => setIsContributionOpen(false)}
+                    >
+                      <ContributionForm
+                        goal={selectedGoal}
+                        accounts={accounts}
+                        onExit={() => setIsContributionOpen(false)}
+                      />
+                    </BaseModal>
+
                     <div className="flex gap-2xs">
                       <Button
                         onClick={() => {
