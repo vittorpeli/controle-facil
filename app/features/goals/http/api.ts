@@ -4,6 +4,7 @@ import { makeListGoalsUseCase } from '../application/use-cases/list-goals'
 import { DrizzleContributionsRepository } from '../services/drizzle-contributions-repository'
 import { DrizzleGoalsRepository } from '../services/drizzle-goals-repository'
 import { createGoalAction } from './actions/create-goal-action'
+import { deleteGoalAction } from './actions/delete-goal-action'
 import { updateGoalAction } from './actions/update-goal-action'
 
 export async function loader({ request }: Route.LoaderArgs) {
@@ -31,6 +32,8 @@ export async function action({ request }: Route.ActionArgs) {
       return await createGoalAction(formData, user.id)
     case 'update-goal':
       return await updateGoalAction(formData, user.id)
+    case 'delete-goal':
+      return await deleteGoalAction(formData, user.id)
     default:
       throw new Error('Invalid Intent')
   }

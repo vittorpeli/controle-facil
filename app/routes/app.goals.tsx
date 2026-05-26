@@ -11,6 +11,7 @@ import { useLoaderData } from 'react-router'
 import type { Goal } from '~/features/goals/core/goal'
 import { action, loader } from '~/features/goals/http/api'
 import { CreateGoalForm } from '~/features/goals/presentation/create-goal-form'
+import { DeleteGoalConfirmation } from '~/features/goals/presentation/delete-confirmation'
 import { UpdateGoalForm } from '~/features/goals/presentation/update-goal-form'
 import { dateFormatter } from '~/features/shared/date-formatter'
 import { Button } from '~/ui/Button'
@@ -38,6 +39,7 @@ export default function Goals() {
 
   const [isCreateOpen, setIsCreateOpen] = useState(false)
   const [isUpdateOpen, setIsUpdateOpen] = useState(false)
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
 
   const [selectedGoal, setSelectedGoal] = useState<Goal | null>(null)
 
@@ -131,9 +133,21 @@ export default function Goals() {
                         />
                       </BaseModal>
 
-                      <Button data-button-variant="link">
+                      <Button
+                        onClick={() => {
+                          setSelectedGoal(goal)
+                          setIsConfirmationOpen(true)
+                        }}
+                        data-button-variant="link"
+                      >
                         <Trash />
                       </Button>
+                      <DeleteGoalConfirmation
+                        isOpen={isConfirmationOpen}
+                        onCancel={() => setIsConfirmationOpen(false)}
+                        item={selectedGoal}
+                        message="Tem certeza que quer deletar essa meta?"
+                      />
                     </div>
                   </CardAction>
                 </CardContent>
