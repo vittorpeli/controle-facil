@@ -5,6 +5,7 @@ import { dateFormatter } from '~/features/shared/date-formatter'
 import { ArchiveConfirmationAlert } from '~/features/transactions/components/archive-confirmation-alert'
 import { CreateAccountModal } from '~/features/transactions/components/create-account-modal'
 import { CreateTransactionModal } from '~/features/transactions/components/create-transaction-modal'
+import { DeleteTransactionAlert } from '~/features/transactions/components/delete-transaction-alert'
 import { EditAccountModal } from '~/features/transactions/components/edit-account-modal'
 import { EditTransactionForm } from '~/features/transactions/components/edit-transaction-form'
 import { TransferForm } from '~/features/transactions/components/transfer-form'
@@ -42,6 +43,7 @@ export default function Transactions() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isTransferModalOpen, setIsTrasnferModalOpen] = useState(false)
   const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false)
+  const [isDeleteTransactionOpen, setIsDeleteTransactionOpen] = useState(false)
 
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
   const [selectedTransaction, setSelectedTransaction] =
@@ -226,9 +228,21 @@ export default function Transactions() {
                           />
                         </BaseModal>
 
-                        <Button data-button-variant="link">
+                        <Button
+                          onClick={() => {
+                            setSelectedTransaction(tx)
+                            setIsDeleteTransactionOpen(true)
+                          }}
+                          data-button-variant="link"
+                        >
                           <Trash className="size-[1em]" />
                         </Button>
+                        <DeleteTransactionAlert
+                          isOpen={isDeleteTransactionOpen}
+                          onCancel={() => setIsDeleteTransactionOpen(false)}
+                          item={selectedTransaction}
+                          message="Certeza que quer excluir essa transação?"
+                        />
                       </div>
                     </span>
                   </TableCell>

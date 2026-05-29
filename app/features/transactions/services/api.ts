@@ -9,6 +9,7 @@ import { archiveAccountAction } from './actions/archive-account'
 import { createAccountAction } from './actions/create-account'
 import { createTransactionAction } from './actions/create-transaction'
 import { createTransferAction } from './actions/create-transfer'
+import { deleteTransactionAction } from './actions/delete-transaction'
 import { editAccountAction } from './actions/edit-account'
 import { editTransactionAction } from './actions/edit-transaction'
 
@@ -69,6 +70,9 @@ export async function action({ request }: ActionArgs) {
 
     case 'edit-transaction':
       return editTransactionAction(formData, user.id)
+
+    case 'delete-transaction':
+      return deleteTransactionAction(formData, user.id)
 
     default:
       throw new Error('invalid intent')
