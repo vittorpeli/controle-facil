@@ -1,6 +1,6 @@
 import { ShieldCheckIcon, TrendingUp } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '~/ui/card'
-import { GoalProgress } from './goal-progress'
+import { SavingProgress } from './saving-progress'
 
 const formatter = new Intl.NumberFormat('pt-BR', {
   style: 'currency',
@@ -50,7 +50,7 @@ export function Savings({ amount, goal }: { amount: number; goal: number }) {
           <span className="font-bold text-step-5">
             {formatter.format(amount)}
           </span>
-          <GoalProgress progress={progress} />
+          <SavingProgress progress={progress === Infinity ? 100 : progress} />
         </div>
       </CardContent>
     </Card>

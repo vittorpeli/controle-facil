@@ -1,4 +1,10 @@
 import { cn } from '~/lib/utils'
+import {
+  buildAreaPath,
+  buildLinePath,
+  type ChartSeries,
+  normalizePoints,
+} from './helpers'
 
 export const ChartContainer = ({
   children,
@@ -39,12 +45,12 @@ export const ChartLegend = ({
 // Wrapper do SVG com o Gradient base
 export const ChartCanvas = ({
   className,
-  children,
+  series,
   height,
   width = 1000,
 }: {
   className?: string
-  children: React.ReactNode
+  series: ChartSeries[]
   height: number
   width?: number
 }) => (
@@ -61,7 +67,24 @@ export const ChartCanvas = ({
           <stop offset="100%" stopColor="#047857" stopOpacity="0" />
         </linearGradient>
       </defs>
-      {children}
+      {series.map((serie) => {
+        const points = normalizePoints(serie.values, width, height)
+
+        const linePath = buildLinePath(points)
+        const areaPath = buildAreaPath(points, height)
+
+        return (
+          <g key={serie.label}>
+            {serie.area && <ChartArea path={areaPath} />}
+
+            <ChartLine
+              path={linePath}
+              color={serie.color}
+              dashed={serie.dashed}
+            />
+          </g>
+        )
+      })}
     </svg>
   </div>
 )
@@ -94,3 +117,24 @@ export const ChartArea = ({
   path: string
   fillUrl?: string
 }) => <path d={path} fill={`url(#${fillUrl})`} />
+
+export const Chart = ({
+  series,
+  height = 300,
+}: {
+  series: ChartSeries[]
+  height?: number
+}) => {
+  return (
+    <ChartContainer height={height}>
+      <ChartLegend
+        item={series.map((s) => ({
+          label: s.label,
+          colorClass: '',
+        }))}
+      />
+
+      <ChartCanvas height={height} series={series} />
+    </ChartContainer>
+  )
+}

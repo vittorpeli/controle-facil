@@ -1,4 +1,4 @@
-export function GoalProgress({ progress }: { progress: number }) {
+export function SavingProgress({ progress }: { progress: number }) {
   return (
     <div className="flex items-center gap-2xs">
       <div className="h-1 w-full overflow-hidden rounded-full bg-mid">
