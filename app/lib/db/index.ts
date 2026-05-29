@@ -1,9 +1,18 @@
-import { config } from 'dotenv';
-import { drizzle } from 'drizzle-orm/libsql';
+import { config } from 'dotenv'
+import { drizzle } from 'drizzle-orm/libsql'
 
-config({ path: '.env' });
+config({ path: '.env' })
 
-export const db = drizzle({ connection: {
-  url: process.env.TURSO_CONNECTION_URL!,
-  authToken: process.env.TURSO_AUTH_TOKEN!,
-}});
+if (!process.env.TURSO_CONNECTION_URL) {
+  throw new Error('Missing TURSO_CONNECTION_URL environment variable')
+}
+if (!process.env.TURSO_AUTH_TOKEN) {
+  throw new Error('Missing TURSO_AUTH_TOKEN environment variable')
+}
+
+export const db = drizzle({
+  connection: {
+    url: process.env.TURSO_CONNECTION_URL!,
+    authToken: process.env.TURSO_AUTH_TOKEN!,
+  },
+})
