@@ -113,11 +113,4 @@
   --spacing-s-l: var(--spacing-s-l);
   --spacing-m-xl: var(--spacing-m-xl);
   --spacing-l-2xl: var(--spacing-l-2xl);
-
-  /* Viewports */
-  --breakpoint-*: initial;
-  --breakpoint-sm: var(--breakpoint-sm);
-  --breakpoint-md: var(--breakpoint-md);
-  --breakpoint-lg: var(--breakpoint-lg);
-  --breakpoint-xl: var(--breakpoint-xl);
 }
