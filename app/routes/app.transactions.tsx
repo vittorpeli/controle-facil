@@ -1,4 +1,4 @@
-import { Archive, Lightbulb, Plus, SquarePen } from 'lucide-react'
+import { Archive, Lightbulb, Plus, SquarePen, Trash } from 'lucide-react'
 import { useState } from 'react'
 import { useLoaderData } from 'react-router'
 import { dateFormatter } from '~/features/shared/date-formatter'
@@ -6,8 +6,10 @@ import { ArchiveConfirmationAlert } from '~/features/transactions/components/arc
 import { CreateAccountModal } from '~/features/transactions/components/create-account-modal'
 import { CreateTransactionModal } from '~/features/transactions/components/create-transaction-modal'
 import { EditAccountModal } from '~/features/transactions/components/edit-account-modal'
+import { EditTransactionForm } from '~/features/transactions/components/edit-transaction-form'
 import { TransferForm } from '~/features/transactions/components/transfer-form'
 import type { Account } from '~/features/transactions/core/account'
+import type { Transaction } from '~/features/transactions/core/transaction'
 import { action, loader } from '~/features/transactions/services/api'
 import { Button } from '~/ui/Button'
 import { Card, CardContent, CardHeader } from '~/ui/card'
@@ -39,8 +41,11 @@ export default function Transactions() {
   const [isAlertOpen, setIsAlertOpen] = useState(false)
   const [isEditModalOpen, setIsEditModalOpen] = useState(false)
   const [isTransferModalOpen, setIsTrasnferModalOpen] = useState(false)
+  const [isEditTransactionOpen, setIsEditTransactionOpen] = useState(false)
 
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null)
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null)
 
   const { accounts, transactions, categories } = useLoaderData<typeof loader>()
 
@@ -76,7 +81,9 @@ export default function Transactions() {
             isOpen={isAccountModalOpen}
             onClose={() => setIsAccountModalOpen(false)}
           >
-            <CreateAccountModal onSuccess={() => setIsAccountModalOpen(false)} />
+            <CreateAccountModal
+              onSuccess={() => setIsAccountModalOpen(false)}
+            />
           </BaseModal>
         </Headline>
         <div className="grid">
@@ -195,7 +202,35 @@ export default function Transactions() {
                   <TableCell>{dateFormatter.format(tx.date)}</TableCell>
                   <TableCell>
                     {/* <TableCellIcon>{tx.icon}</TableCellIcon> */}
-                    {tx.description ?? dateFormatter.format(tx.date)}
+                    <span className="flex gap-2xs">
+                      {tx.description ?? dateFormatter.format(tx.date)}
+                      <div className="flex gap-3xs">
+                        <Button
+                          onClick={() => {
+                            setSelectedTransaction(tx)
+                            setIsEditTransactionOpen(true)
+                          }}
+                          data-button-variant="link"
+                        >
+                          <SquarePen className="size-[1em]" />
+                        </Button>
+                        <BaseModal
+                          isOpen={isEditTransactionOpen}
+                          onClose={() => setIsEditTransactionOpen(false)}
+                        >
+                          <EditTransactionForm
+                            transaction={selectedTransaction}
+                            accounts={accounts}
+                            categories={categories}
+                            onCancel={() => setIsEditTransactionOpen(false)}
+                          />
+                        </BaseModal>
+
+                        <Button data-button-variant="link">
+                          <Trash className="size-[1em]" />
+                        </Button>
+                      </div>
+                    </span>
                   </TableCell>
                   <TableCell>
                     <span className="bg-dark-glare text-light px-2xs py-3xs rounded-md">

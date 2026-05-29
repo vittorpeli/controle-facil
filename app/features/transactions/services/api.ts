@@ -10,6 +10,7 @@ import { createAccountAction } from './actions/create-account'
 import { createTransactionAction } from './actions/create-transaction'
 import { createTransferAction } from './actions/create-transfer'
 import { editAccountAction } from './actions/edit-account'
+import { editTransactionAction } from './actions/edit-transaction'
 
 type LoaderArgs = {
   request: Request
@@ -65,6 +66,9 @@ export async function action({ request }: ActionArgs) {
 
     case 'create-transfer':
       return createTransferAction(formData, user.id)
+
+    case 'edit-transaction':
+      return editTransactionAction(formData, user.id)
 
     default:
       throw new Error('invalid intent')
